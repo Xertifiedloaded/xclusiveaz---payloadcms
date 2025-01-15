@@ -19,7 +19,7 @@ export const HeroSection: React.FC<HeroBlock> = ({ heading, subheading, backgrou
       >
         <div className="absolute inset-0 bg-black bg-opacity-50" />
         <div className="relative z-10 container mx-auto px-4 h-full flex flex-col justify-center items-center text-white">
-          <h1 className="text-5xl font-bold mb-4">{heading}</h1>
+          <h1 className="lg:text-5xl text-3xl text-center font-bold mb-4">{heading}</h1>
           <p className="text-xl mb-8">{subheading}</p>
           {cta && (
             <Link href={cta.link}>
