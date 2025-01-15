@@ -22,6 +22,7 @@ export interface Config {
     discounts: Discount;
     header: Header;
     footer: Footer;
+    cart: Cart;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -38,6 +39,7 @@ export interface Config {
     discounts: DiscountsSelect<false> | DiscountsSelect<true>;
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    cart: CartSelect<false> | CartSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -186,20 +188,10 @@ export interface Product {
   }[];
   colors: {
     color: string;
-    colorCode: string;
     id?: string | null;
   }[];
   status: 'draft' | 'published' | 'outOfStock' | 'discontinued';
   featured?: boolean | null;
-  specifications?: {
-    material?: string | null;
-    care?:
-      | {
-          instruction?: string | null;
-          id?: string | null;
-        }[]
-      | null;
-  };
   updatedAt: string;
   createdAt: string;
 }
@@ -327,6 +319,7 @@ export interface Page {
             blockType: 'content';
           }
         | {
+            heading?: string | null;
             categories?: (string | Category)[] | null;
             id?: string | null;
             blockName?: string | null;
@@ -334,11 +327,6 @@ export interface Page {
           }
       )[]
     | null;
-  seo?: {
-    title?: string | null;
-    description?: string | null;
-    image?: (string | null) | Media;
-  };
   status?: ('draft' | 'published') | null;
   updatedAt: string;
   createdAt: string;
@@ -421,6 +409,24 @@ export interface Footer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cart".
+ */
+export interface Cart {
+  id: string;
+  cartId: string;
+  items?:
+    | {
+        product: string | Product;
+        quantity: number;
+        id?: string | null;
+      }[]
+    | null;
+  total: number;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -465,6 +471,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'footer';
         value: string | Footer;
+      } | null)
+    | ({
+        relationTo: 'cart';
+        value: string | Cart;
       } | null);
   globalSlug?: string | null;
   user:
@@ -602,22 +612,10 @@ export interface ProductsSelect<T extends boolean = true> {
     | T
     | {
         color?: T;
-        colorCode?: T;
         id?: T;
       };
   status?: T;
   featured?: T;
-  specifications?:
-    | T
-    | {
-        material?: T;
-        care?:
-          | T
-          | {
-              instruction?: T;
-              id?: T;
-            };
-      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -738,17 +736,11 @@ export interface PagesSelect<T extends boolean = true> {
         categoriesShowcase?:
           | T
           | {
+              heading?: T;
               categories?: T;
               id?: T;
               blockName?: T;
             };
-      };
-  seo?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        image?: T;
       };
   status?: T;
   updatedAt?: T;
@@ -828,6 +820,23 @@ export interface FooterSelect<T extends boolean = true> {
         address?: T;
       };
   copyrightText?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cart_select".
+ */
+export interface CartSelect<T extends boolean = true> {
+  cartId?: T;
+  items?:
+    | T
+    | {
+        product?: T;
+        quantity?: T;
+        id?: T;
+      };
+  total?: T;
   updatedAt?: T;
   createdAt?: T;
 }

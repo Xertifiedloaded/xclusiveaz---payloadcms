@@ -1,8 +1,11 @@
 import type { CollectionConfig } from 'payload';
-export const HomePage: CollectionConfig = {
+export const Pages: CollectionConfig = {
   slug: 'pages',
   admin: {
     useAsTitle: 'title',
+  },
+  access: {
+    read: () => true, 
   },
   fields: [
     {
@@ -92,6 +95,10 @@ export const HomePage: CollectionConfig = {
           slug: 'categoriesShowcase',
           fields: [
             {
+              name: 'heading',
+              type: 'text',
+            },
+            {
               name: 'categories',
               type: 'relationship',
               relationTo: 'categories',
@@ -101,25 +108,7 @@ export const HomePage: CollectionConfig = {
         },
       ],
     },
-    {
-      name: 'seo',
-      type: 'group',
-      fields: [
-        {
-          name: 'title',
-          type: 'text',
-        },
-        {
-          name: 'description',
-          type: 'textarea',
-        },
-        {
-          name: 'image',
-          type: 'upload',
-          relationTo: 'media',
-        },
-      ],
-    },
+
     {
       name: 'status',
       type: 'select',
@@ -134,6 +123,8 @@ export const Navigation = {
   slug: 'navigation',
   admin: {
     useAsTitle: 'name',
+  },  access: {
+    read: () => true,
   },
   fields: [
     {
@@ -178,4 +169,5 @@ export const Navigation = {
       ],
     },
   ],
+  
 };

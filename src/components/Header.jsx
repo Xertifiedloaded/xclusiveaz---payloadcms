@@ -1,77 +1,79 @@
 'use client'
-import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button"; 
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { fetchHeader } from "@/hooks/FetchCollection";
 
-export const Header = ({ headerCollection }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+export default function Header() {
+  const [header, setHeader] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      const data = await fetchHeader();
+      setHeader(data);
+    })();
+  }, []);
+
+  if (!header) {
+    return <div className="text-white">Loading...</div>;
+  }
 
   return (
-    <header className="fixed top-0 w-full bg-white shadow-sm z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <div className="flex-shrink-0">
-            <Link href="/" className="text-2xl font-bold">
-              Your Logo
-            </Link>
-          </div>
-
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-8">
-            {headerCollection?.navigation?.map((item) => (
-              <Link
-                key={item.id}
-                href={item.url}
-                className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md"
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
-
-          {/* Mobile Menu Button */}
-          <div className="md:hidden">
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-gray-700 hover:text-gray-900"
-            >
-              <span className="sr-only">Open menu</span>
-              {/* Hamburger icon */}
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            </button>
-          </div>
+    <header className="w-full z-50 bg-black top-0 l-0 r-0  p-4 text-lg    text-white  ">
+      <div className="container  mx-auto flex items-center justify-between">
+        <div className="flex items-center">
+          {header.logo && (
+            <img src={header.logo.url} alt="Logo" className="h-10 w-auto" />
+          )}
         </div>
 
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1">
-              {headerCollection?.navigation?.map((item) => (
-                <Link
-                  key={item.id}
-                  href={item.url}
-                  className="block text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {item.label}
-                </Link>
-              ))}
+        <nav className="hidden md:flex gap-6">
+          {header.navigationItems.map((item, index) => (
+            <div key={index} className="relative group">
+              <a href={item.link} className="text-white hover:text-blue-600">
+                {item.label}
+              </a>
+              {item.subItems && item.subItems.length > 0 && (
+                <div className="absolute left-0 mt-2 hidden w-48 bg-white border rounded shadow-md group-hover:block">
+                  {item.subItems.map((subItem, subIndex) => (
+                    <a
+                      key={subIndex}
+                      href={subItem.link}
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    >
+                      {subItem.label}
+                    </a>
+                  ))}
+                </div>
+              )}
             </div>
-          </div>
+          ))}
+        </nav>
+
+        {header.ctaButton && (
+          <Button className="text-black bg-white" asChild>
+            <a href={header.ctaButton.link} className="">
+              {header.ctaButton.text}
+            </a>
+          </Button>
         )}
+
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className="md:hidden">
+              Menu
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            {header.navigationItems.map((item, index) => (
+              <DropdownMenuItem key={index} asChild>
+                <a href={item.link}>{item.label}</a>
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </header>
-  )
+  );
 }

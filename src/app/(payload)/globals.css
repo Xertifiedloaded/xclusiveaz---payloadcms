@@ -1,6 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+*::before,*::after{
+  padding: 0;
+  left: 0;
+}
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -61,6 +65,19 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply text-base ;
   }
 }
+
+::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .wrapper {
+    @apply px-6 md:px-28 lg:px-32
+  }
+  
+  .nav-wrapper {
+    @apply px-4 md:px-24 lg:px-28
+  }
+  

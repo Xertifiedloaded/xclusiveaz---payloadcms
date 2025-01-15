@@ -10,6 +10,7 @@ export const GET = async () => {
     collection: 'users',
   })
 
+
   return Response.json(data)
 }
 

@@ -1,10 +1,14 @@
-import type { CollectionConfig } from 'payload'
+
+import { CollectionConfig } from 'payload';
 
 export const Products: CollectionConfig = {
   slug: 'products',
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'category', 'price', 'status'],
+  },
+  access: {
+    read: () => true, 
   },
   fields: [
     {
@@ -26,7 +30,7 @@ export const Products: CollectionConfig = {
     {
       name: 'category',
       type: 'relationship',
-      relationTo: 'categories' as const,
+      relationTo: 'categories',
       required: true,
     },
     {
@@ -72,11 +76,6 @@ export const Products: CollectionConfig = {
           type: 'text',
           required: true,
         },
-        {
-          name: 'colorCode',
-          type: 'text', 
-          required: true,
-        },
       ],
     },
     {
@@ -91,25 +90,23 @@ export const Products: CollectionConfig = {
       type: 'checkbox',
       defaultValue: false,
     },
-    {
-      name: 'specifications',
-      type: 'group',
-      fields: [
-        {
-          name: 'material',
-          type: 'text',
-        },
-        {
-          name: 'care',
-          type: 'array',
-          fields: [
-            {
-              name: 'instruction',
-              type: 'text',
-            },
-          ],
-        },
-      ],
-    },
   ],
-}
+  hooks: {
+    afterRead: [
+      async ({ doc }) => {
+        if (doc.images && doc.images.length > 0) {
+          doc.images = await Promise.all(
+            doc.images.map(async (image: { image: { filename: string } }) => {
+              const imageUrl = `${process.env.PUBLIC_URL}/media/${image.image.filename}`;
+              return {
+                ...image,
+                imageUrl, 
+              };
+            })
+          );
+        }
+        return doc;
+      },
+    ],
+  },
+};

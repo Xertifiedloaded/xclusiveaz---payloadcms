@@ -13,10 +13,11 @@ import { Products } from './collections/Product'
 import { Categories } from './collections/Categories'
 import { Orders } from './collections/Order'
 import { Customers } from './collections/Customer'
-import { HomePage } from './collections/Pages'
+import { Pages } from './collections/Pages'
 import { Discounts } from './collections/Discount'
 import { HeaderCollection } from './collections/HeaderCollection'
 import { FooterCollection } from './collections/FooterCollection'
+import { Cart } from './collections/Cart'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -28,7 +29,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Products, Categories, Orders, Customers, HomePage, Discounts,HeaderCollection,FooterCollection],
+  collections: [Users, Media, Products, Categories, Orders, Customers, Pages, Discounts,HeaderCollection,FooterCollection,Cart],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
