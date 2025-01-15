@@ -1,6 +1,6 @@
 export async function fetchHeader() {
   try {
-    const response = await fetch(`http://localhost:3000/api/header`);
+    const response = await fetch(`/api/header`);
 
     if (!response.ok) {
       throw new Error(`Failed to fetch header: ${response.statusText}`);
@@ -25,7 +25,7 @@ export async function fetchHeader() {
 
 export async function fetchFooter() {
   try {
-    const response = await fetch(`http://localhost:3000/api/footer`);
+    const response = await fetch(`/api/footer`);
 
     if (!response.ok) {
       throw new Error(`Failed to fetch footer: ${response.statusText}`);
