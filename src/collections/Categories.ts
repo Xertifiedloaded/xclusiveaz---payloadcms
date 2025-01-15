@@ -25,4 +25,7 @@ export const Categories: CollectionConfig = {
       relationTo: 'categories',
     },
   ],
+  access: {
+    read: () => true, 
+  },
 };

@@ -29,5 +29,8 @@ export const Media: CollectionConfig = {
       name: 'caption',
       type: 'text',
     }
-  ]
+  ],
+  access: {
+    read: () => true, 
+  },
 }

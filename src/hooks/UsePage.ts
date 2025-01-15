@@ -8,7 +8,7 @@ export function usePageData(slug: string) {
     useEffect(() => {
       const fetchPage = async () => {
         try {
-          const response = await fetch(`http://localhost:3000/api/pages?slug=${slug}`)
+          const response = await fetch(`/api/pages?slug=${slug}`)
           if (!response.ok) {
             throw new Error(`Failed to fetch page: ${response.statusText}`)
           }
