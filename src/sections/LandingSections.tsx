@@ -58,14 +58,14 @@ export const FeaturedProducts: React.FC<FeaturedProductsBlock> = ({ heading, pro
   )
 }
 
-export const CategoriesShowcase: React.FC<CategoriesShowcaseBlock> = ({heading, categories }) => {
+export const CategoriesShowcase: React.FC<CategoriesShowcaseBlock> = ({ heading, categories }) => {
   return (
     <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
-      <h2 className="text-3xl text-black font-bold mb-8">{heading}</h2>
+        <h2 className="text-3xl text-black font-bold mb-8">{heading}</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {categories?.map((category) => (
-            <Card key={category.id} className="overflow-hidden">
+          {categories?.map((category, index) => (
+            <Card key={category.id || `category-${index}`} className="overflow-hidden">
               <CardContent className="p-0">
                 <img
                   src={category?.image?.url}
@@ -87,7 +87,8 @@ export const CategoriesShowcase: React.FC<CategoriesShowcaseBlock> = ({heading, 
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
+
 
 

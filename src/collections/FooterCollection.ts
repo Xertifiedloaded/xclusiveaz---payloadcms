@@ -6,10 +6,8 @@ export const FooterCollection: CollectionConfig = {
     useAsTitle: 'name',
   },
   access: {
-    create: () => true, // Allow all users to create; modify as needed.
-    read: () => true,   // Allow all users to read; modify as needed.
-    update: () => true, // Allow all users to update; modify as needed.
-    delete: () => true, // Allow all users to delete; modify as needed.
+    read: () => true,   
+
   },
   fields: [
     {

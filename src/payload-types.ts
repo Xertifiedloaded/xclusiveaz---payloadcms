@@ -22,7 +22,6 @@ export interface Config {
     discounts: Discount;
     header: Header;
     footer: Footer;
-    cart: Cart;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -39,7 +38,6 @@ export interface Config {
     discounts: DiscountsSelect<false> | DiscountsSelect<true>;
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
-    cart: CartSelect<false> | CartSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -409,24 +407,6 @@ export interface Footer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "cart".
- */
-export interface Cart {
-  id: string;
-  cartId: string;
-  items?:
-    | {
-        product: string | Product;
-        quantity: number;
-        id?: string | null;
-      }[]
-    | null;
-  total: number;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -471,10 +451,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'footer';
         value: string | Footer;
-      } | null)
-    | ({
-        relationTo: 'cart';
-        value: string | Cart;
       } | null);
   globalSlug?: string | null;
   user:
@@ -820,23 +796,6 @@ export interface FooterSelect<T extends boolean = true> {
         address?: T;
       };
   copyrightText?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "cart_select".
- */
-export interface CartSelect<T extends boolean = true> {
-  cartId?: T;
-  items?:
-    | T
-    | {
-        product?: T;
-        quantity?: T;
-        id?: T;
-      };
-  total?: T;
   updatedAt?: T;
   createdAt?: T;
 }

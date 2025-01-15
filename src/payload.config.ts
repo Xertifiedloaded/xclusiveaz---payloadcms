@@ -17,7 +17,6 @@ import { Pages } from './collections/Pages'
 import { Discounts } from './collections/Discount'
 import { HeaderCollection } from './collections/HeaderCollection'
 import { FooterCollection } from './collections/FooterCollection'
-import { Cart } from './collections/Cart'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -29,7 +28,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Products, Categories, Orders, Customers, Pages, Discounts,HeaderCollection,FooterCollection,Cart],
+  collections: [Users, Media, Products, Categories, Orders, Customers, Pages, Discounts,HeaderCollection,FooterCollection],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
