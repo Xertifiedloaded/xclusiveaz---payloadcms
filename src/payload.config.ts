@@ -17,7 +17,10 @@ import { Pages } from './collections/Pages'
 import { Discounts } from './collections/Discount'
 import { HeaderCollection } from './collections/HeaderCollection'
 import { FooterCollection } from './collections/FooterCollection'
-
+import { cloudinaryAdapter } from './lib/CloudinaryAdapter'
+import { cloudStoragePlugin } from '@payloadcms/plugin-cloud-storage';
+import {uploadthingStorage} from '@payloadcms/storage-uploadthing';
+import Carts from './collections/Cart'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -25,10 +28,10 @@ export default buildConfig({
   admin: {
     user: Users.slug,
     importMap: {
-      baseDir: path.resolve(dirname),
+  baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Products, Categories, Orders, Customers, Pages, Discounts,HeaderCollection,FooterCollection],
+  collections: [Users, Media, Products, Categories, Orders, Customers, Pages, Discounts,HeaderCollection,FooterCollection,Carts],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -40,6 +43,20 @@ export default buildConfig({
   sharp,
   plugins: [
     payloadCloudPlugin(),
-    // storage-adapter-placeholder
+    uploadthingStorage({
+      collections: {
+        media: true,
+      },
+      options: {
+        token: process.env.UPLOADTHING_TOKEN,
+        acl: 'public-read',
+      },
+    }),
+    
   ],
+
+  // plugins: [
+  //   payloadCloudPlugin(),
+  //   // storage-adapter-placeholder
+  // ],
 })

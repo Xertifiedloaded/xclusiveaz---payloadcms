@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import { ShoppingCart,  Loader, Heart, Eye } from 'lucide-react'
 
+
 export default function ProductsPage() {
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
@@ -26,8 +27,8 @@ export default function ProductsPage() {
     fetchProducts()
   }, [])
 
-  const handleAddToCart = (productId) => {
-    console.log(`Added product ${productId} to cart`)
+  const handleAddToCart = (product) => {
+    addToCart(product)
   }
 
   const handleWishlist = (productId) => {

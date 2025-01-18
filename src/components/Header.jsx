@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
+
 import {
   Sheet,
   SheetContent,
@@ -20,6 +21,7 @@ import {
 import { ShoppingCart } from 'lucide-react'
 import { fetchHeader } from '@/hooks/FetchCollection'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
+// import CartPage from './Cart';
 
 export default function Header() {
   const [header, setHeader] = useState(null)
@@ -104,7 +106,8 @@ export default function Header() {
                 <SheetDescription>View your shopping cart items</SheetDescription>
               </SheetHeader>
               <div className="mt-8">
-                <p className="text-sm text-muted-foreground">Your cart is empty</p>
+                {/* <p className="text-sm text-muted-foreground">Your cart is empty</p> */}
+                {/* <CartPage/> */}
               </div>
             </SheetContent>
           </Sheet>

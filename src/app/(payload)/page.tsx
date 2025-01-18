@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import Header from '@/components/Header'
+
 import Footer from '@/components/Footer'
 
 import { CategoriesShowcase, FeaturedProducts, HeroSection } from '@/sections/LandingSections'
@@ -17,7 +17,7 @@ const LandingPage: React.FC = () => {
 
   return (
     <main className="min-h-screen">
-      <Header />
+
       {pageData?.content?.map((block) => {
         switch (block.blockType) {
           case 'hero':

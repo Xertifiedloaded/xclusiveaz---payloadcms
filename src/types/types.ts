@@ -52,3 +52,4 @@ export interface PageData {
     content: Block[];
     status: 'draft' | 'published';
 }
+

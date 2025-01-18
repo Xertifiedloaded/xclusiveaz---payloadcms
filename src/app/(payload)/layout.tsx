@@ -1,4 +1,3 @@
-
 import config from '@payload-config'
 import '@payloadcms/next/css'
 import type { ServerFunctionClient } from 'payload'
@@ -8,7 +7,8 @@ import { Fraunces, Inter, Manrope } from 'next/font/google'
 import { importMap } from './admin/importMap.js'
 import './custom.scss'
 import './globals.css'
-
+import Header from '@/components/Header.jsx'
+import Footer from '@/components/Footer.jsx'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -40,10 +40,13 @@ const serverFunction: ServerFunctionClient = async function (args) {
 
 const Layout = ({ children }: Args) => (
   <RootLayout config={config} importMap={importMap} serverFunction={serverFunction}>
-    <div className={`${inter.className} ${fraunces.className} ${manrope.className}`}>
-
+    <div
+      className={`${inter.className} $import { CartProvider } from '../../context/CartContext';
+{fraunces.className} ${manrope.className}`}
+    >
+      <Header />
       {children}
-   
+      <Footer />
     </div>
   </RootLayout>
 )
