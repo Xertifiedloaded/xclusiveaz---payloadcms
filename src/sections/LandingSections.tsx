@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { ChevronRight } from 'lucide-react'
 
 import { CategoriesShowcaseBlock, HeroBlock, FeaturedProductsBlock } from '../types/types'
+import { useCart } from '@/context/CartContext'
 export const HeroSection: React.FC<HeroBlock> = ({ heading, subheading, backgroundImage, cta }) => {
   return (
     <section className="relative h-screen">
@@ -33,6 +34,10 @@ export const HeroSection: React.FC<HeroBlock> = ({ heading, subheading, backgrou
 }
 
 export const FeaturedProducts: React.FC<FeaturedProductsBlock> = ({ heading, products }) => {
+  const { 
+    addToCart
+  } = useCart()
+
   return (
     <section className="py-16 container mx-auto px-4">
       <h2 className="text-3xl font-bold mb-8">{heading}</h2>
@@ -47,7 +52,7 @@ export const FeaturedProducts: React.FC<FeaturedProductsBlock> = ({ heading, pro
               />
               <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
               <p className="text-lg font-bold">${product.price}</p>
-              <Button className="w-full mt-4">
+              <Button onClick={() => addToCart(product)} className="w-full mt-4">
                 <ShoppingCart className="mr-2" /> Add to Cart
               </Button>
             </CardContent>

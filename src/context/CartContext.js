@@ -1,16 +1,47 @@
 
 'use client'
 
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useReducer, useEffect } from 'react'
 
 const CartContext = createContext()
 
-export function CartProvider({ children }) {
-  const [cart, setCart] = useState([])
+const cartReducer = (state, action) => {
+  switch (action.type) {
+    case 'INITIALIZE_CART':
+      return action.payload
+      
+      case 'ADD_TO_CART':
+        const existingProduct = state.find(item => item.id === action.payload.id)
+        if (existingProduct) {
+          alert('Item already exists in the cart')
+          return state
+        }
+        return [...state, { ...action.payload, quantity: 1 }]
   
+    case 'REMOVE_FROM_CART':
+      return state.filter(item => item.id !== action.payload)
+
+      case 'UPDATE_QUANTITY':
+        return state.map(item =>
+          item.id === action.payload.id
+            ? { ...item, quantity: Math.max(1, action.payload.quantity) }
+            : item
+        )
+
+    case 'CLEAR_CART':
+      return []
+
+    default:
+      return state
+  }
+}
+
+export function CartProvider({ children }) {
+  const [cart, dispatch] = useReducer(cartReducer, [])
+
   useEffect(() => {
     const savedCart = JSON.parse(localStorage.getItem('cart')) || []
-    setCart(savedCart)
+    dispatch({ type: 'INITIALIZE_CART', payload: savedCart })
   }, [])
 
   useEffect(() => {
@@ -18,61 +49,35 @@ export function CartProvider({ children }) {
   }, [cart])
 
   const addToCart = (product) => {
-    setCart((prevCart) => {
-      const existingProduct = prevCart.find((item) => item.id === product.id)
-   
-      if (existingProduct) {
-        console.log(existingProduct);
-        return prevCart.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        )
-      }
-
-      return [...prevCart, { ...product, quantity: 1 }]
-    })
+    const existingProduct = cart.find(item => item.id === product.id)
+    if (existingProduct) {
+      alert('Item already exists in the cart')
+      return
+    }
+    dispatch({ type: 'ADD_TO_CART', payload: product })
   }
-
   const removeFromCart = (productId) => {
-    setCart((prevCart) =>
-      prevCart.filter((item) => item.id !== productId)
-    )
+    dispatch({ type: 'REMOVE_FROM_CART', payload: productId })
   }
 
   const updateQuantity = (productId, quantity) => {
-    setCart((prevCart) =>
-      prevCart.map((item) =>
-        item.id === productId
-          ? { ...item, quantity: Math.max(0, quantity) }
-          : item
-      ).filter((item) => item.quantity > 0)
-    )
+    dispatch({ type: 'UPDATE_QUANTITY', payload: { id: productId, quantity } })
   }
 
   const clearCart = () => {
-    setCart([])
+    dispatch({ type: 'CLEAR_CART' })
   }
 
-  const cartTotal = cart.reduce(
-    (total, item) => total + (item.price * item.quantity) / 100,
-    0
-  )
-
-  const cartCount = cart.reduce((count, item) => count + item.quantity, 0)
-
   return (
-    <CartContext.Provider
-      value={{
-        cart,
-        addToCart,
-        removeFromCart,
-        updateQuantity,
-        clearCart,
-        cartTotal,
-        cartCount,
-      }}
-    >
+    <CartContext.Provider value={{ 
+      cart, 
+      addToCart, 
+      removeFromCart, 
+      updateQuantity, 
+      clearCart,
+      cartTotal: cart.reduce((total, item) => total + (item.price * item.quantity), 0),
+      cartCount: cart.reduce((count, item) => count + item.quantity, 0)
+    }}>
       {children}
     </CartContext.Provider>
   )

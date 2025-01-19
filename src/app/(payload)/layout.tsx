@@ -9,7 +9,7 @@ import './custom.scss'
 import './globals.css'
 import Header from '@/components/Header.jsx'
 import Footer from '@/components/Footer.jsx'
-
+import {CartProvider} from '../../context/CartContext.js'
 const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
@@ -40,11 +40,13 @@ const serverFunction: ServerFunctionClient = async function (args) {
 
 const Layout = ({ children }: Args) => (
   <RootLayout config={config} importMap={importMap} serverFunction={serverFunction}>
-    <div className={`${inter.className} ${fraunces.className} ${manrope.className}`}>
-    <Header />
+    <CartProvider>
+      <div className={`${inter.className} ${fraunces.className} ${manrope.className}`}>
+        <Header />
         {children}
         <Footer />
-    </div>
+      </div>
+    </CartProvider>
   </RootLayout>
 )
 

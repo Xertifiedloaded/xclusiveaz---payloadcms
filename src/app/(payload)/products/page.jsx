@@ -17,6 +17,7 @@ import {
 import { Separator } from '@/components/ui/separator'
 import { Badge } from '@/components/ui/badge'
 import { Slider } from '@/components/ui/slider'
+import { useCart } from '@/context/CartContext'
 
 export default function ProductsPage() {
   const { products, loading, error } = useCombinedData()
@@ -24,40 +25,9 @@ export default function ProductsPage() {
   const [selectedSizes, setSelectedSizes] = useState([])
   const [priceRange, setPriceRange] = useState([0, 1000])
   const [sortBy, setSortBy] = useState('featured')
-  const [cart, setCart] = useState([])
-
+  const { addToCart } = useCart()
   // Load cart from localStorage on component mount
-  useEffect(() => {
-    const savedCart = JSON.parse(localStorage.getItem('cart')) || []
-    setCart(savedCart)
-  }, [])
 
-  useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart))
-  }, [cart])
-
-  const handleAddToCart = (product) => {
-    setCart((prevCart) => {
-      const existingProduct = prevCart.find((item) => item.id === product.id)
-   
-      if (existingProduct) {
-        console.log(existingProduct);
-        return prevCart.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        )
-      }
-
-      return [...prevCart, { ...product, quantity: 1 }]
-    })
-  }
-
-  const handleRemoveFromCart = (productId) => {
-    setCart((prevCart) =>
-      prevCart.filter((item) => item.id !== productId)
-    )
-  }
 
   if (loading)
     return (
@@ -274,7 +244,7 @@ export default function ProductsPage() {
                     <span className="text-xl font-bold">
                       ${(product.price / 100).toFixed(2)}
                     </span>
-                    <Button onClick={() => handleAddToCart(product)}>
+                    <Button onClick={() => addToCart(product)}>
                       <ShoppingCart className="h-4 w-4 mr-2" />
                       Add to Cart
                     </Button>
