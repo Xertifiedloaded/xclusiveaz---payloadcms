@@ -1,128 +1,116 @@
-import { useCart } from "@/context/CartContext";
-import { ArrowLeft, Minus, Plus, Trash2 } from "lucide-react";
-import Link from "next/link";
+// components/Cart.jsx
+'use client'
 
-export default function CartPage() {
-    const {
-      cart,
-      removeFromCart,
-      updateQuantity,
-      clearCart,
-      cartTotal,
-      cartItemsCount,
-    } = useCart();
-  
-    if (!cartItemsCount) {
-      return (
-        <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center">
-          <div className="text-center">
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-              Your cart is empty
-            </h2>
-            <Link
-              href="/products"
-              className="inline-flex items-center space-x-2 text-indigo-600 hover:text-indigo-700"
-            >
-              <ArrowLeft className="h-5 w-5" />
-              <span>Continue Shopping</span>
-            </Link>
-          </div>
-        </div>
-      );
-    }
-  
-    return (
-      <main className="min-h-screen bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="flex justify-between items-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">Shopping Cart</h1>
-            <button
-              onClick={clearCart}
-              className="text-red-600 hover:text-red-700 font-medium"
-            >
-              Clear Cart
-            </button>
-          </div>
-  
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2">
-         {cart?.map((item) => (
-                  <div key={item.id} className="p-6 flex space-x-6">
-                    <div className="flex-shrink-0 w-24 h-24">
-                      {item.images?.[0]?.image?.url && (
-                        <img
-                          src={item.images[0].image.url}
-                          alt={item.name}
-                          className="w-full h-full object-cover rounded-md"
-                        />
-                      )}
+import { useCart } from '@/contexts/CartContext'
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
+import { Button } from '@/components/ui/button'
+import { ShoppingCart, Minus, Plus, X } from 'lucide-react'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { Separator } from '@/components/ui/separator'
+
+export function CartPage() {
+  const { cart, removeFromCart, updateQuantity, clearCart, cartTotal, cartCount } = useCart()
+
+  return (
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button variant="outline" size="icon" className="relative">
+          <ShoppingCart className="h-4 w-4" />
+          {cartCount > 0 && (
+            <span className="absolute -top-2 -right-2 bg-primary text-primary-foreground rounded-full w-5 h-5 text-xs flex items-center justify-center">
+              {cartCount}
+            </span>
+          )}
+        </Button>
+      </SheetTrigger>
+      <SheetContent className="w-full sm:max-w-lg">
+        <SheetHeader>
+          <SheetTitle>Shopping Cart ({cartCount} items)</SheetTitle>
+        </SheetHeader>
+        
+        <div className="flex flex-col h-full">
+          <ScrollArea className="flex-1 -mx-6 px-6">
+            {cart.length === 0 ? (
+              <div className="flex flex-col items-center justify-center h-[450px] space-y-4">
+                <ShoppingCart className="h-12 w-12 text-muted-foreground" />
+                <p className="text-muted-foreground">Your cart is empty</p>
+              </div>
+            ) : (
+              <div className="space-y-6 py-6">
+                {cart.map((item) => (
+                  <div key={item.id} className="flex items-center space-x-4">
+                    <div className="relative aspect-square h-16 w-16 min-w-fit overflow-hidden rounded">
+                      <img
+                        src={item.images?.[0]?.image?.url || '/placeholder.png'}
+                        alt={item.name}
+                        className="object-cover"
+                      />
                     </div>
-                    <div className="flex-1">
-                      <div className="flex justify-between">
-                        <h3 className="text-lg font-semibold text-gray-900">
-                          {item.name}
-                        </h3>
-                        <button
+                    <div className="flex flex-1 flex-col">
+                      <div className="flex items-center justify-between">
+                        <h3 className="font-semibold">{item.name}</h3>
+                        <Button
+                          variant="ghost"
+                          size="icon"
                           onClick={() => removeFromCart(item.id)}
-                          className="text-gray-400 hover:text-red-500"
                         >
-                          <Trash2 className="h-5 w-5" />
-                        </button>
+                          <X className="h-4 w-4" />
+                        </Button>
                       </div>
-                      <p className="mt-1 text-sm text-gray-500 line-clamp-1">
-                        {item.description}
-                      </p>
-                      <div className="mt-4 flex justify-between items-center">
-                        <div className="flex items-center space-x-3">
-                          <button
-                            onClick={() =>
-                              updateQuantity(item.id, Math.max(1, item.quantity - 1))
-                            }
-                            className="p-1 rounded-full bg-gray-100 hover:bg-gray-200"
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-2">
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="h-8 w-8"
+                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
                           >
-                            <Minus className="h-4 w-4" />
-                          </button>
-                          <span className="text-gray-900 font-medium">
-                            {item.quantity}
-                          </span>
-                          <button
-                            onClick={() =>
-                              updateQuantity(item.id, item.quantity + 1)
-                            }
-                            className="p-1 rounded-full bg-gray-100 hover:bg-gray-200"
+                            <Minus className="h-3 w-3" />
+                          </Button>
+                          <span>{item.quantity}</span>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="h-8 w-8"
+                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
                           >
-                            <Plus className="h-4 w-4" />
-                          </button>
+                            <Plus className="h-3 w-3" />
+                          </Button>
                         </div>
-                        <p className="text-lg font-bold text-gray-900">
-                          ${(item.price * item.quantity).toFixed(2)}
-                        </p>
+                        <span className="font-semibold">
+                          ${((item.price * item.quantity) / 100).toFixed(2)}
+                        </span>
                       </div>
                     </div>
                   </div>
                 ))}
-            </div>
-            <div className="lg:col-span-1">
-              <div className="bg-white rounded-xl shadow-sm p-6 sticky top-4">
-                <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                  Order Summary
-                </h2>
-                <div className="space-y-4">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Subtotal</span>
-                    <span className="text-gray-900 font-medium">
-                      ${cartTotal.toFixed(2)}
-                    </span>
-                  </div>
-                  <button className="w-full bg-indigo-600 text-white py-3 px-4 rounded-lg hover:bg-indigo-700 transition-colors">
-                    Proceed to Checkout
-                  </button>
+              </div>
+            )}
+          </ScrollArea>
+
+          {cart.length > 0 && (
+            <div className="space-y-4 pt-6">
+              <Separator />
+              <div className="space-y-1.5">
+                <div className="flex justify-between">
+                  <span className="font-semibold">Total</span>
+                  <span className="font-semibold">${cartTotal.toFixed(2)}</span>
                 </div>
               </div>
+              <div className="flex space-x-2">
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={clearCart}
+                >
+                  Clear Cart
+                </Button>
+                <Button className="w-full">Checkout</Button>
+              </div>
             </div>
-          </div>
+          )}
         </div>
-      </main>
-    );
-  }
-  
+      </SheetContent>
+    </Sheet>
+  )
+}

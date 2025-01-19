@@ -1,41 +1,54 @@
-export async function fetchHeader() {
-  try {
-    const response = await fetch(`http://localhost:3000/api/header`);
 
-    if (!response.ok) {
-      throw new Error(`Failed to fetch header: ${response.statusText}`);
+import { useEffect, useState } from 'react'
+
+
+
+export const useCombinedData = () => {
+  const [data, setData] = useState({
+    header: null,
+    footer: null,
+    pages: [],    
+    products: [], 
+    carts: null,
+  })
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    const fetchCombinedData = async () => {
+      try {
+        setLoading(true)
+        const response = await fetch('/api/data')
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+
+        const responseData = await response.json()
+        const { header, footer, pages, products, carts } = responseData
+        
+        setData({
+          header: header || null,
+          footer: footer || null,
+          pages: Array.isArray(pages) ? pages : [],
+          products: Array.isArray(products) ? products : [],
+          carts: carts || null,
+        })
+      } catch (err) {
+        setError(err)
+        // Preserve the array structure but empty them on error
+        setData(prev => ({ 
+          ...prev, 
+          products: [],
+          pages: [],
+        }))
+      } finally {
+        setLoading(false)
+      }
     }
 
-    const data = await response.json();
+    fetchCombinedData()
+  }, [])
 
-    if (data?.header) {
-      return data.header;
-    } else {
-      console.error("No header data found");
-      return null;
-    }
-
-  } catch (error) {
-    console.error("Error fetching header:", error);
-    return null;
-  }
+  return { ...data, loading, error }
 }
-
-
-
-export async function fetchFooter() {
-  try {
-    const response = await fetch(`http://localhost:3000/api/footer`);
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch footer: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    return data.docs[0];  
-  } catch (error) {
-    console.error('Error fetching footer:', error);
-    return null;
-  }
-}
-

@@ -40,13 +40,10 @@ const serverFunction: ServerFunctionClient = async function (args) {
 
 const Layout = ({ children }: Args) => (
   <RootLayout config={config} importMap={importMap} serverFunction={serverFunction}>
-    <div
-      className={`${inter.className} $import { CartProvider } from '../../context/CartContext';
-{fraunces.className} ${manrope.className}`}
-    >
-      <Header />
-      {children}
-      <Footer />
+    <div className={`${inter.className} ${fraunces.className} ${manrope.className}`}>
+    <Header />
+        {children}
+        <Footer />
     </div>
   </RootLayout>
 )

@@ -1,24 +1,20 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
-
-import Footer from '@/components/Footer'
-
 import { CategoriesShowcase, FeaturedProducts, HeroSection } from '@/sections/LandingSections'
+import { useCombinedData } from '@/hooks/FetchCollection'
 
-import { usePageData } from '@/hooks/UsePage'
+const LandingPage = () => {
+  const { pages, loading, error } = useCombinedData()
+  if (loading) return <div>Loading...</div>
+  if (error) return <div>Error loading header data: {error.message}</div>
 
-const LandingPage: React.FC = () => {
-  const { pageData, loading, error } = usePageData('landing')
+  if (!pages || pages.length === 0) return <div>No  page data available</div>;
+  const landingPage = pages.find(page => page.pageType === 'landing');
 
-  if (loading) return <div className="text-center py-16">Loading...</div>
-  if (error) return <div className="text-center py-16 text-red-500">{error}</div>
-  if (!pageData) return <div className="text-center py-16">No content available.</div>
-
+  if (!landingPage) return <div>No landing page found</div>;
   return (
     <main className="min-h-screen">
-
-      {pageData?.content?.map((block) => {
+      {landingPage?.content?.map((block) => {
         switch (block.blockType) {
           case 'hero':
             return <HeroSection key={block.id} {...block} />
@@ -30,7 +26,6 @@ const LandingPage: React.FC = () => {
             return null
         }
       })}
-      <Footer />
     </main>
   )
 }

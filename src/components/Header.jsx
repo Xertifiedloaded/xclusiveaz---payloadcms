@@ -19,26 +19,25 @@ import {
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu'
 import { ShoppingCart } from 'lucide-react'
-import { fetchHeader } from '@/hooks/FetchCollection'
+import {useCombinedData } from '@/hooks/FetchCollection'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 // import CartPage from './Cart';
 
 export default function Header() {
-  const [header, setHeader] = useState(null)
   const [isCartOpen, setIsCartOpen] = useState(false)
+  const { header, loading, error } = useCombinedData();
+console.log(`this is the fucking header ${header}`);
+  if (loading) return <div>Loading...</div>; 
+  if (error) return <div>Error loading header data: {error.message}</div>;
 
-  useEffect(() => {
-    ;(async () => {
-      const data = await fetchHeader()
-      setHeader(data)
-    })()
-  }, [])
+  if (!header) return <div>No header data available</div>;
+  console.log(`this is the header data ${header}`);
 
-  if (!header) {
-    return <div className="flex items-center justify-center h-16 bg-background">Loading...</div>
-  }
+
+
 
   return (
+
     <header className="fixed bg-primary w-full z-50 top-0 ">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <div className="flex items-center">
@@ -46,7 +45,7 @@ export default function Header() {
           <h1 className=" text-3xl">Xclusive Couture</h1>
         </div>
 
-        {/* Desktop Navigation */}
+
         <NavigationMenu className="hidden md:flex">
           <NavigationMenuList>
             {header.navigationItems.map((item, index) => (

@@ -53,3 +53,9 @@ export interface PageData {
     status: 'draft' | 'published';
 }
 
+type CombinedData = {
+  pages: PageData | null;
+  loading: boolean;
+  error: Error | null;
+};
+
