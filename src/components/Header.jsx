@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
+
 import {
   Sheet,
   SheetContent,
@@ -18,23 +19,20 @@ import {
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu'
 import { ShoppingCart } from 'lucide-react'
-import { fetchHeader } from '@/hooks/FetchCollection'
+import { useCombinedData } from '@/hooks/FetchCollection'
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
+import { CartPage } from './Cart'
+import { useCart } from '@/context/CartContext'
 
 export default function Header() {
-  const [header, setHeader] = useState(null)
+  const { cartCount } = useCart()
   const [isCartOpen, setIsCartOpen] = useState(false)
+  const { header, loading, error } = useCombinedData()
+  if (loading) return <div>Loading...</div>
+  if (error) return <div>Error loading header data: {error.message}</div>
 
-  useEffect(() => {
-    ;(async () => {
-      const data = await fetchHeader()
-      setHeader(data)
-    })()
-  }, [])
-
-  if (!header) {
-    return <div className="flex items-center justify-center h-16 bg-background">Loading...</div>
-  }
+  if (!header) return <div>No header data available</div>
+  console.log(`this is the header data ${header}`)
 
   return (
     <header className="fixed bg-primary w-full z-50 top-0 ">
@@ -44,7 +42,6 @@ export default function Header() {
           <h1 className=" text-3xl">Xclusive Couture</h1>
         </div>
 
-        {/* Desktop Navigation */}
         <NavigationMenu className="hidden md:flex">
           <NavigationMenuList>
             {header.navigationItems.map((item, index) => (
@@ -93,18 +90,22 @@ export default function Header() {
           {/* Shopping Cart */}
           <Sheet open={isCartOpen} onOpenChange={setIsCartOpen}>
             <SheetTrigger asChild>
-              <Button variant="outline" size="icon">
-                <ShoppingCart color="black" className="h-4 w-4" />
-                <VisuallyHidden>Open shopping cart</VisuallyHidden>
+              <Button variant="outline" size="icon" className="relative">
+                <ShoppingCart className="h-4 text-black w-4" />
+                {cartCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-primary text-primary-foreground rounded-full w-5 h-5 text-xs flex items-center justify-center">
+                    {cartCount}
+                  </span>
+                )}
               </Button>
             </SheetTrigger>
             <SheetContent>
               <SheetHeader>
-                <SheetTitle>Shopping Cart</SheetTitle>
+              <SheetTitle>Shopping Cart ({cartCount} items)</SheetTitle>
                 <SheetDescription>View your shopping cart items</SheetDescription>
               </SheetHeader>
               <div className="mt-8">
-                <p className="text-sm text-muted-foreground">Your cart is empty</p>
+                <CartPage />
               </div>
             </SheetContent>
           </Sheet>

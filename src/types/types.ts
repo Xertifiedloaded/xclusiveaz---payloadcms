@@ -52,3 +52,10 @@ export interface PageData {
     content: Block[];
     status: 'draft' | 'published';
 }
+
+type CombinedData = {
+  pages: PageData | null;
+  loading: boolean;
+  error: Error | null;
+};
+
