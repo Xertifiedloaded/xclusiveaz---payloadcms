@@ -8,13 +8,7 @@ import { Separator } from '@/components/ui/separator'
 import { useCart } from '@/context/CartContext'
 
 export function CartPage() {
-  const {
-    cart,
-    removeFromCart,
-    updateQuantity,
-    clearCart,
-    cartTotal,
-  } = useCart()
+  const { cart, removeFromCart, updateQuantity, clearCart, cartTotal } = useCart()
 
   return (
     <div className="flex flex-col h-[75vh]">
@@ -38,11 +32,7 @@ export function CartPage() {
                 <div className="flex flex-1 flex-col">
                   <div className="flex items-center justify-between">
                     <h3 className="font-semibold text-foreground">{item.name}</h3>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => removeFromCart(item.id)}
-                    >
+                    <Button variant="ghost" size="icon" onClick={() => removeFromCart(item.id)}>
                       <X className="h-4 w-4" />
                     </Button>
                   </div>
@@ -86,19 +76,16 @@ export function CartPage() {
           <div className="space-y-1.5">
             <div className="flex justify-between">
               <span className="font-semibold text-foreground">Total</span>
-              <span className="font-semibold text-foreground">
-                ${cartTotal.toFixed(2)}
-              </span>
+              <span className="font-semibold text-foreground">${cartTotal.toFixed(2)}</span>
             </div>
           </div>
           <div className="flex space-x-2">
-            <Button
-              className="w-full"
-              onClick={clearCart}
-            >
+            <Button className="w-full" onClick={clearCart}>
               Clear Cart
             </Button>
-            <Button className="w-full">Checkout</Button>
+            <Button className="w-full">
+              <a   href="/checkout">Checkout</a>
+            </Button>
           </div>
         </div>
       )}

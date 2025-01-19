@@ -1,21 +1,26 @@
-import React from 'react'
+import React from 'react';
+import Link from 'next/link';
+import { Card, CardContent } from '@/components/ui/card';
+import { ShoppingCart, ChevronRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { CategoriesShowcaseBlock, HeroBlock, FeaturedProductsBlock } from '../types/types';
+import { useCart } from '@/context/CartContext';
 
-import Link from 'next/link'
-import { Card, CardContent } from '@/components/ui/card'
-import { ShoppingCart } from 'lucide-react'
-
-import { Button } from '@/components/ui/button'
-import { ChevronRight } from 'lucide-react'
-
-import { CategoriesShowcaseBlock, HeroBlock, FeaturedProductsBlock } from '../types/types'
-import { useCart } from '@/context/CartContext'
 export const HeroSection: React.FC<HeroBlock> = ({ heading, subheading, backgroundImage, cta }) => {
+  if (!heading && !subheading && !backgroundImage) {
+    return (
+      <section className="h-screen flex items-center justify-center bg-gray-100 text-gray-500">
+        <p>No hero content available at the moment.</p>
+      </section>
+    );
+  }
+
   return (
     <section className="relative h-screen">
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{
-          backgroundImage: `url(${backgroundImage?.url})`,
+          backgroundImage: `url(${backgroundImage?.url || ''})`,
         }}
       >
         <div className="absolute inset-0 bg-black bg-opacity-50" />
@@ -30,24 +35,30 @@ export const HeroSection: React.FC<HeroBlock> = ({ heading, subheading, backgrou
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
 export const FeaturedProducts: React.FC<FeaturedProductsBlock> = ({ heading, products }) => {
-  const { 
-    addToCart
-  } = useCart()
+  const { addToCart } = useCart();
+
+  if (!heading || !products || products.length === 0) {
+    return (
+      <section className="py-16 container mx-auto px-4 text-center">
+        <p className="text-gray-500">No featured products available at the moment.</p>
+      </section>
+    );
+  }
 
   return (
     <section className="py-16 container mx-auto px-4">
       <h2 className="text-3xl font-bold mb-8">{heading}</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {products?.map((product) => (
-          <Card key={product.id}>
+        {products.map((product, index) => (
+          <Card key={product.id || `product-${index}`}>
             <CardContent className="p-4">
               <img
-                src={`${product.images[0]?.image?.url}`}
-                alt={product.name}
+                src={product?.images?.[0]?.image?.url || ''}
+                alt={product.name || 'Product'}
                 className="w-full h-64 object-cover mb-4"
               />
               <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
@@ -60,21 +71,29 @@ export const FeaturedProducts: React.FC<FeaturedProductsBlock> = ({ heading, pro
         ))}
       </div>
     </section>
-  )
-}
+  );
+};
 
 export const CategoriesShowcase: React.FC<CategoriesShowcaseBlock> = ({ heading, categories }) => {
+  if (!heading || !categories || categories.length === 0) {
+    return (
+      <section className="py-16 bg-gray-50 text-center">
+        <p className="text-gray-500">No categories to showcase at the moment.</p>
+      </section>
+    );
+  }
+
   return (
     <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl text-black font-bold mb-8">{heading}</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {categories?.map((category, index) => (
+          {categories.map((category, index) => (
             <Card key={category.id || `category-${index}`} className="overflow-hidden">
               <CardContent className="p-0">
                 <img
-                  src={category?.image?.url}
-                  alt={category.name}
+                  src={category?.image?.url || ''}
+                  alt={category.name || 'Category'}
                   className="w-full h-48 object-cover"
                 />
                 <div className="p-4">
@@ -94,6 +113,3 @@ export const CategoriesShowcase: React.FC<CategoriesShowcaseBlock> = ({ heading,
     </section>
   );
 };
-
-
-
