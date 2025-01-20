@@ -36,7 +36,6 @@ export const useCombinedData = () => {
         })
       } catch (err) {
         setError(err)
-        // Preserve the array structure but empty them on error
         setData(prev => ({ 
           ...prev, 
           products: [],

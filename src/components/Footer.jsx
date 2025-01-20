@@ -6,42 +6,55 @@ export default function Footer() {
   const { footer, loading, error } = useCombinedData();
   if (loading) {
     return (
-      <div className=" text-white">
-        <div className="container mx-auto px-4 pt-12 pb-8">
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-            <div className="space-y-4">
-              <div className="h-6 w-32 bg-gray-600 animate-pulse rounded"></div>
-              <div className="space-y-2">
-                {Array(3).fill('').map((_, index) => (
-                  <div key={index} className="h-4 w-48 bg-gray-600 animate-pulse rounded"></div>
+      <footer className="bg-gray-50 mt-auto">
+      <div className="container mx-auto px-4">
+   
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 py-12">
+
+          <div className="space-y-4">
+            <div className="h-8 w-32 bg-gray-200 animate-pulse rounded-md"></div>
+            <div className="space-y-3">
+              {[...Array(3)].map((_, i) => (
+                <div key={i} className="h-4 w-full max-w-[200px] bg-gray-200 animate-pulse rounded"></div>
+              ))}
+            </div>
+          </div>
+
+          {[...Array(2)].map((_, i) => (
+            <div key={i} className="space-y-4">
+              <div className="h-6 w-24 bg-gray-200 animate-pulse rounded"></div>
+              <div className="space-y-3">
+                {[...Array(4)].map((_, j) => (
+                  <div key={j} className="h-4 w-32 bg-gray-200 animate-pulse rounded"></div>
                 ))}
               </div>
             </div>
-            <div className="md:col-span-2">
-              <div className="h-6 w-24 bg-gray-600 animate-pulse rounded mb-4"></div>
-              <div className="space-y-2">
-                {Array(5).fill('').map((_, index) => (
-                  <div key={index} className="h-4 w-32 bg-gray-600 animate-pulse rounded"></div>
-                ))}
-              </div>
-            </div>
-            <div>
-              <div className="h-6 w-36 bg-gray-600 animate-pulse rounded mb-4"></div>
-              <div className="flex gap-4">
-                {Array(4).fill('').map((_, index) => (
-                  <div key={index} className="h-10 w-10 bg-gray-600 animate-pulse rounded-full"></div>
-                ))}
-              </div>
+          ))}
+
+          <div className="space-y-4">
+            <div className="h-6 w-40 bg-gray-200 animate-pulse rounded"></div>
+            <div className="h-12 w-full bg-gray-200 animate-pulse rounded-lg"></div>
+
+            <div className="flex gap-3 mt-4">
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="h-10 w-10 bg-gray-200 animate-pulse rounded-full"></div>
+              ))}
             </div>
           </div>
         </div>
 
-        <div className="border-t border-gray-700 mt-8">
-          <div className="container mx-auto px-4 py-6">
-            <div className="h-4 w-64 bg-gray-600 animate-pulse mx-auto rounded"></div>
+        <div className="border-t border-gray-200 py-6">
+          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <div className="h-4 w-64 bg-gray-200 animate-pulse rounded"></div>
+            <div className="flex space-x-4">
+              {[...Array(3)].map((_, i) => (
+                <div key={i} className="h-4 w-20 bg-gray-200 animate-pulse rounded"></div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
+    </footer>
     );
   }
 
