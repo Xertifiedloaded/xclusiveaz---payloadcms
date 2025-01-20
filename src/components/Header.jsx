@@ -35,7 +35,7 @@ export default function Header() {
   console.log(`this is the header data ${header}`)
 
   return (
-    <header className="fixed bg-primary w-full z-50 top-0 ">
+    <header className=" bg-primary w-full z-50 top-0 ">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <div className="flex items-center">
           {/* {header.logo && <img src={header.logo.url} alt="Logo" className="h-8 w-auto" />} */}
