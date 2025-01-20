@@ -1,24 +1,25 @@
 import type { CollectionConfig } from 'payload';
+
 export const Pages: CollectionConfig = {
   slug: 'pages',
   admin: {
     useAsTitle: 'title',
   },
   access: {
-    read: () => true,   
-    update: () => true,
+    read: () => true,
+    update: () => true, 
   },
   fields: [
     {
       name: 'title',
       type: 'text',
-      required: true,
+      required: true, 
     },
     {
       name: 'slug',
       type: 'text',
       required: true,
-      unique: true,
+      unique: true, 
     },
     {
       name: 'pageType',
@@ -29,6 +30,9 @@ export const Pages: CollectionConfig = {
     {
       name: 'content',
       type: 'blocks',
+      admin: {
+        condition: () => true,
+      },
       blocks: [
         // Hero Section
         {
@@ -47,7 +51,7 @@ export const Pages: CollectionConfig = {
               name: 'backgroundImage',
               type: 'upload',
               relationTo: 'media',
-              required: true,
+              required: true, 
             },
             {
               name: 'cta',
@@ -78,6 +82,9 @@ export const Pages: CollectionConfig = {
               type: 'relationship',
               relationTo: 'products',
               hasMany: true,
+              admin: {
+                condition: () => true, 
+              },
             },
           ],
         },
@@ -104,12 +111,14 @@ export const Pages: CollectionConfig = {
               type: 'relationship',
               relationTo: 'categories',
               hasMany: true,
+              admin: {
+                condition: () => true, 
+              },
             },
           ],
         },
       ],
     },
-
     {
       name: 'status',
       type: 'select',
