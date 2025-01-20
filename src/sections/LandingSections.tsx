@@ -97,9 +97,9 @@ export const CategoriesShowcase: React.FC<CategoriesShowcaseBlock> = ({ heading,
                   className="w-full h-48 object-cover"
                 />
                 <div className="p-4">
-                  <h3 className="text-xl font-semibold mb-2">{category.name}</h3>
+                  <h3 className="text-xl font-semibold mb-2">{category?.name}</h3>
                   <p className="text-gray-600 mb-4">{category.description}</p>
-                  <Link href={`/category/${category.id}`}>
+                  <Link href={`/category/${category?.name}`}>
                     <Button variant="outline" className="w-full">
                       Browse <ChevronRight className="ml-2" />
                     </Button>

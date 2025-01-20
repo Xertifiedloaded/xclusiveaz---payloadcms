@@ -13,6 +13,9 @@ export const GET = async () => {
   const footerData = await payload.find({
     collection: 'footer',
   })
+  const CategoriesData = await payload.find({
+    collection: 'categories',
+  })
 
   const pageData = await payload.find({
     collection: 'pages',
@@ -31,6 +34,7 @@ export const GET = async () => {
     footer: footerData?.docs?.length > 0 ? footerData.docs[0] : null,
     pages: pageData?.docs || [],
     products: productData?.docs || [],
+    Categories: CategoriesData?.docs || [],
     carts: cartData?.docs?.length > 0 ? cartData.docs[0] : null,
   };
    
