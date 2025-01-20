@@ -5,7 +5,8 @@ export const Pages: CollectionConfig = {
     useAsTitle: 'title',
   },
   access: {
-    read: () => true, 
+    read: () => true,   
+    update: () => true,
   },
   fields: [
     {

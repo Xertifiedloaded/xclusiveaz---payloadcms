@@ -123,7 +123,7 @@ export interface Media {
   id: string;
   alt?: string | null;
   caption?: string | null;
-  _key?: string | null;
+  prefix?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -137,7 +137,6 @@ export interface Media {
   focalY?: number | null;
   sizes?: {
     thumbnail?: {
-      _key?: string | null;
       url?: string | null;
       width?: number | null;
       height?: number | null;
@@ -146,7 +145,6 @@ export interface Media {
       filename?: string | null;
     };
     card?: {
-      _key?: string | null;
       url?: string | null;
       width?: number | null;
       height?: number | null;
@@ -385,27 +383,66 @@ export interface Header {
  */
 export interface Footer {
   id: string;
+  /**
+   * The name of this footer section
+   */
   name: string;
+  /**
+   * Add navigation links for the footer
+   */
   navigationItems?:
     | {
+        /**
+         * The text to display for this link
+         */
         label: string;
+        /**
+         * The URL this link should navigate to
+         */
         link: string;
         id?: string | null;
       }[]
     | null;
+  /**
+   * Add social media links
+   */
   socialLinks?:
     | {
+        /**
+         * Name of the social media platform
+         */
         platform: string;
+        /**
+         * URL to your social media profile
+         */
         url: string;
+        /**
+         * Icon for this social media platform
+         */
         icon?: (string | null) | Media;
         id?: string | null;
       }[]
     | null;
+  /**
+   * Contact information details
+   */
   contactInfo?: {
+    /**
+     * Contact email address
+     */
     email?: string | null;
+    /**
+     * Contact phone number
+     */
     phone?: string | null;
+    /**
+     * Physical address
+     */
     address?: string | null;
   };
+  /**
+   * Copyright text to display in the footer
+   */
   copyrightText: string;
   updatedAt: string;
   createdAt: string;
@@ -553,7 +590,7 @@ export interface UsersSelect<T extends boolean = true> {
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   caption?: T;
-  _key?: T;
+  prefix?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -571,7 +608,6 @@ export interface MediaSelect<T extends boolean = true> {
         thumbnail?:
           | T
           | {
-              _key?: T;
               url?: T;
               width?: T;
               height?: T;
@@ -582,7 +618,6 @@ export interface MediaSelect<T extends boolean = true> {
         card?:
           | T
           | {
-              _key?: T;
               url?: T;
               width?: T;
               height?: T;
