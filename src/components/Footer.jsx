@@ -1,12 +1,50 @@
 'use client'
-import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import {  useCombinedData } from '@/hooks/FetchCollection';
 import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin, GithubIcon } from "lucide-react"; 
 
 export default function Footer() {
   const { footer, loading, error } = useCombinedData();
-  if (loading) return <div>Loading...</div>; 
+  if (loading) {
+    return (
+      <div className=" text-white">
+        <div className="container mx-auto px-4 pt-12 pb-8">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <div className="space-y-4">
+              <div className="h-6 w-32 bg-gray-600 animate-pulse rounded"></div>
+              <div className="space-y-2">
+                {Array(3).fill('').map((_, index) => (
+                  <div key={index} className="h-4 w-48 bg-gray-600 animate-pulse rounded"></div>
+                ))}
+              </div>
+            </div>
+            <div className="md:col-span-2">
+              <div className="h-6 w-24 bg-gray-600 animate-pulse rounded mb-4"></div>
+              <div className="space-y-2">
+                {Array(5).fill('').map((_, index) => (
+                  <div key={index} className="h-4 w-32 bg-gray-600 animate-pulse rounded"></div>
+                ))}
+              </div>
+            </div>
+            <div>
+              <div className="h-6 w-36 bg-gray-600 animate-pulse rounded mb-4"></div>
+              <div className="flex gap-4">
+                {Array(4).fill('').map((_, index) => (
+                  <div key={index} className="h-10 w-10 bg-gray-600 animate-pulse rounded-full"></div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="border-t border-gray-700 mt-8">
+          <div className="container mx-auto px-4 py-6">
+            <div className="h-4 w-64 bg-gray-600 animate-pulse mx-auto rounded"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (error) return <div>Error loading header data: {error.message}</div>;
 
   if (!footer) return <div>No Footer data available</div>;
@@ -21,7 +59,7 @@ export default function Footer() {
 
   return (
 
-    <footer className="bg-gray-800 text-white">
+    <footer className=" text-white">
       <div className="container mx-auto px-4 pt-12 pb-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           <div className="space-y-4">
@@ -81,29 +119,11 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="md:hidden px-4 py-4 border-t border-gray-700">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="w-full">
-              Quick Links
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-[calc(100vw-2rem)] mx-4">
-            {footer?.navigationItems?.map((item, index) => (
-              <DropdownMenuItem key={index} asChild>
-                <a href={item?.link} className="w-full">
-                  {item.label}
-                </a>
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
 
       <div className="border-t border-gray-700 mt-8">
         <div className="container mx-auto px-4 py-6">
           <p className="text-sm text-gray-400 text-center">
-            {footer?.copyrightText}
+            {footer?.copyrightText} {new Date().getFullYear()}
           </p>
         </div>
       </div>

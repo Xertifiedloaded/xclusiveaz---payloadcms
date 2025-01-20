@@ -2,11 +2,26 @@
 
 import { useState, useEffect } from 'react'
 import { useCombinedData } from '@/hooks/FetchCollection'
-import { ShoppingCart, Loader, Heart, Search, SlidersHorizontal, X, ChevronDown } from 'lucide-react'
+import {
+  ShoppingCart,
+  Loader,
+  Heart,
+  Search,
+  SlidersHorizontal,
+  X,
+  ChevronDown,
+} from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card'
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose } from '@/components/ui/sheet'
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+  SheetClose,
+} from '@/components/ui/sheet'
 import {
   Select,
   SelectContent,
@@ -18,6 +33,7 @@ import { Separator } from '@/components/ui/separator'
 import { Badge } from '@/components/ui/badge'
 import { Slider } from '@/components/ui/slider'
 import { useCart } from '@/context/CartContext'
+import { ProductsPageSkeleton } from '@/components/skeletal/LandingSkeletal'
 
 export default function ProductsPage() {
   const { products, loading, error } = useCombinedData()
@@ -28,15 +44,7 @@ export default function ProductsPage() {
   const [isFilterOpen, setIsFilterOpen] = useState(false)
   const { addToCart } = useCart()
 
-  if (loading)
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-        <div className="flex flex-col items-center gap-4">
-          <Loader className="h-12 w-12 text-purple-500 animate-spin" />
-          <p className="text-gray-500 font-medium">Loading collection...</p>
-        </div>
-      </div>
-    )
+  if (loading) return <ProductsPageSkeleton />
 
   if (error)
     return (
@@ -45,7 +53,9 @@ export default function ProductsPage() {
           <CardContent className="p-8">
             <div className="flex flex-col items-center gap-4">
               <X className="h-12 w-12 text-red-500" />
-              <p className="text-gray-800 font-medium text-center">Error loading data: {error.message}</p>
+              <p className="text-gray-800 font-medium text-center">
+                Error loading data: {error.message}
+              </p>
               <Button onClick={() => window.location.reload()} variant="outline">
                 Try Again
               </Button>
@@ -56,25 +66,37 @@ export default function ProductsPage() {
     )
 
   const productList = Array.isArray(products) ? products : []
-  const allSizes = [...new Set(productList.flatMap((product) => 
-    Array.isArray(product.sizes) ? product.sizes.map((s) => s.size) : []
-  ))]
+  const allSizes = [
+    ...new Set(
+      productList.flatMap((product) =>
+        Array.isArray(product.sizes) ? product.sizes.map((s) => s.size) : [],
+      ),
+    ),
+  ]
 
   const filteredProducts = productList
     .filter((product) => {
-      const matchesSearch = product.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.description?.root?.children?.[0]?.children?.[0]?.text?.toLowerCase().includes(searchTerm.toLowerCase())
-      const matchesSize = selectedSizes.length === 0 || product.sizes?.some((s) => selectedSizes.includes(s.size))
+      const matchesSearch =
+        product.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.description?.root?.children?.[0]?.children?.[0]?.text
+          ?.toLowerCase()
+          .includes(searchTerm.toLowerCase())
+      const matchesSize =
+        selectedSizes.length === 0 || product.sizes?.some((s) => selectedSizes.includes(s.size))
       const price = product.price / 100
       const matchesPrice = price >= priceRange[0] && price <= priceRange[1]
       return matchesSearch && matchesSize && matchesPrice
     })
     .sort((a, b) => {
       switch (sortBy) {
-        case 'price-asc': return a.price - b.price
-        case 'price-desc': return b.price - a.price
-        case 'name': return a.name?.localeCompare(b.name)
-        default: return 0
+        case 'price-asc':
+          return a.price - b.price
+        case 'price-desc':
+          return b.price - a.price
+        case 'name':
+          return a.name?.localeCompare(b.name)
+        default:
+          return 0
       }
     })
 
@@ -84,7 +106,9 @@ export default function ProductsPage() {
         <div className="flex items-center justify-between">
           <h3 className="text-sm font-semibold tracking-wide uppercase text-gray-500">Sort By</h3>
           {sortBy !== 'featured' && (
-            <Button variant="ghost" size="sm" onClick={() => setSortBy('featured')}>Reset</Button>
+            <Button variant="ghost" size="sm" onClick={() => setSortBy('featured')}>
+              Reset
+            </Button>
           )}
         </div>
         <Select value={sortBy} onValueChange={setSortBy}>
@@ -104,9 +128,13 @@ export default function ProductsPage() {
 
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-sm font-semibold tracking-wide uppercase text-gray-500">Price Range</h3>
+          <h3 className="text-sm font-semibold tracking-wide uppercase text-gray-500">
+            Price Range
+          </h3>
           {(priceRange[0] !== 0 || priceRange[1] !== 1000) && (
-            <Button variant="ghost" size="sm" onClick={() => setPriceRange([0, 1000])}>Reset</Button>
+            <Button variant="ghost" size="sm" onClick={() => setPriceRange([0, 1000])}>
+              Reset
+            </Button>
           )}
         </div>
         <Slider
@@ -138,7 +166,9 @@ export default function ProductsPage() {
         <div className="flex items-center justify-between">
           <h3 className="text-sm font-semibold tracking-wide uppercase text-gray-500">Sizes</h3>
           {selectedSizes.length > 0 && (
-            <Button variant="ghost" size="sm" onClick={() => setSelectedSizes([])}>Reset</Button>
+            <Button variant="ghost" size="sm" onClick={() => setSelectedSizes([])}>
+              Reset
+            </Button>
           )}
         </div>
         <div className="flex flex-wrap gap-2">
@@ -153,7 +183,7 @@ export default function ProductsPage() {
               }`}
               onClick={() => {
                 setSelectedSizes((prev) =>
-                  prev.includes(size) ? prev.filter((s) => s !== size) : [...prev, size]
+                  prev.includes(size) ? prev.filter((s) => s !== size) : [...prev, size],
                 )
               }}
             >
@@ -167,8 +197,7 @@ export default function ProductsPage() {
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      {/* Sticky Header */}
-      <div className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-200">
+      <div className="sticky top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-200">
         <div className="container mx-auto py-4 px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
             <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
@@ -218,7 +247,8 @@ export default function ProductsPage() {
             <div className="flex-1">
               <div className="mb-6 flex items-center justify-between">
                 <p className="text-gray-500">
-                  Showing <span className="font-medium text-gray-900">{filteredProducts.length}</span>{' '}
+                  Showing{' '}
+                  <span className="font-medium text-gray-900">{filteredProducts.length}</span>{' '}
                   products
                 </p>
                 <Button
@@ -237,12 +267,15 @@ export default function ProductsPage() {
                   <CardContent className="flex flex-col items-center justify-center h-64 text-center">
                     <Search className="h-12 w-12 text-gray-300 mb-4" />
                     <p className="text-gray-500 mb-2">No products found matching your criteria.</p>
-                    <Button variant="link" onClick={() => {
-                      setSearchTerm('')
-                      setSelectedSizes([])
-                      setPriceRange([0, 1000])
-                      setSortBy('featured')
-                    }}>
+                    <Button
+                      variant="link"
+                      onClick={() => {
+                        setSearchTerm('')
+                        setSelectedSizes([])
+                        setPriceRange([0, 1000])
+                        setSortBy('featured')
+                      }}
+                    >
                       Clear all filters
                     </Button>
                   </CardContent>
@@ -250,7 +283,10 @@ export default function ProductsPage() {
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {filteredProducts.map((product) => (
-                    <Card key={product.id} className="group overflow-hidden border-gray-200 hover:border-purple-500 transition-colors">
+                    <Card
+                      key={product.id}
+                      className="group overflow-hidden border-gray-200 hover:border-purple-500 transition-colors"
+                    >
                       <CardHeader className="p-0">
                         <div className="aspect-square relative overflow-hidden">
                           <img
@@ -260,7 +296,7 @@ export default function ProductsPage() {
                           />
                           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
                             <div className="absolute bottom-4 left-4 right-4">
-                              <Button 
+                              <Button
                                 className="w-full bg-white/90 hover:bg-white text-gray-900"
                                 onClick={() => addToCart(product)}
                               >
@@ -295,8 +331,8 @@ export default function ProductsPage() {
                         <div className="flex flex-wrap gap-1.5">
                           {Array.isArray(product.sizes) &&
                             product.sizes.map((size, index) => (
-                              <Badge 
-                                key={index} 
+                              <Badge
+                                key={index}
                                 variant="secondary"
                                 className="bg-gray-100 text-gray-600 hover:bg-gray-200"
                               >

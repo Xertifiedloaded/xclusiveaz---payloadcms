@@ -21,36 +21,6 @@ export const HeaderCollection: CollectionConfig = {
         required: true,
       },
       {
-        name: 'navigationItems',
-        type: 'array',
-        fields: [
-          {
-            name: 'label',
-            type: 'text',
-            required: true,
-          },
-          {
-            name: 'link',
-            type: 'text',
-            required: true,
-          },
-          {
-            name: 'subItems',
-            type: 'array',
-            fields: [
-              {
-                name: 'label',
-                type: 'text',
-              },
-              {
-                name: 'link',
-                type: 'text',
-              },
-            ],
-          },
-        ],
-      },
-      {
         name: 'ctaButton',
         type: 'group',
         fields: [
