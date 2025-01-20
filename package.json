@@ -23,6 +23,7 @@
     "@payloadcms/plugin-cloud-storage": "^3.17.1",
     "@payloadcms/richtext-lexical": "latest",
     "@payloadcms/storage-azure": "^3.17.1",
+    "@payloadcms/storage-s3": "^3.17.1",
     "@payloadcms/storage-uploadthing": "^3.17.1",
     "@payloadcms/storage-vercel-blob": "^3.17.1",
     "@radix-ui/react-dialog": "^1.1.4",

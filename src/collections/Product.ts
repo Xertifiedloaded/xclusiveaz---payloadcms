@@ -8,7 +8,8 @@ export const Products: CollectionConfig = {
     defaultColumns: ['name', 'category', 'price', 'status'],
   },
   access: {
-    read: () => true, 
+    read: () => true,   
+    update: () => true,
   },
   fields: [
     {
