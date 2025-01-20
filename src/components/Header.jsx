@@ -11,16 +11,9 @@ import {
   SheetTrigger,
   SheetDescription,
 } from '@/components/ui/sheet'
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from '@/components/ui/navigation-menu'
+
 import { ShoppingCart } from 'lucide-react'
 import { useCombinedData } from '@/hooks/FetchCollection'
-import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import { CartPage } from './Cart'
 import { useCart } from '@/context/CartContext'
 
@@ -30,26 +23,37 @@ export default function Header() {
   const { header, loading, error } = useCombinedData()
   if (loading) {
     return (
-      <header className="bg-primary w-full z-50 top-0">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center">
-            <div className="h-8 w-32 bg-gray-200 animate-pulse rounded"></div>
+      <header className="bg-white shadow-sm w-full z-50 top-0">
+      <div className="container mx-auto px-4 py-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-6">
+            <div className="h-10 w-36 bg-gray-200 animate-pulse rounded-md"></div>
+            <div className="hidden md:flex space-x-4">
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="h-4 w-20 bg-gray-200 animate-pulse rounded"></div>
+              ))}
+            </div>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="h-10 w-32 bg-gray-200 animate-pulse rounded"></div>
-            <div className="relative">
+
+          <div className="flex items-center space-x-6">
+            <div className="hidden md:block h-10 w-64 bg-gray-200 animate-pulse rounded-full"></div>
+            
+            <div className="flex items-center space-x-4">
+              <div className="h-10 w-10 bg-gray-200 animate-pulse rounded-full">
+                <div className="absolute -top-1 -right-1 h-5 w-5 bg-gray-300 animate-pulse rounded-full"></div>
+              </div>
               <div className="h-10 w-10 bg-gray-200 animate-pulse rounded-full"></div>
-              <div className="absolute -top-2 -right-2 h-5 w-5 bg-gray-300 animate-pulse rounded-full"></div>
+              <div className="h-10 w-40 bg-gray-200 animate-pulse rounded-lg"></div>
             </div>
           </div>
         </div>
-      </header>
+      </div>
+    </header>
     )
   }
   if (error) return <div>Error loading header data: {error.message}</div>
 
   if (!header) return <div>No header data available</div>
-  console.log(`this is the header data ${header}`)
 
   return (
     <header className=" bg-primary w-full z-50 top-0 ">
@@ -60,8 +64,6 @@ export default function Header() {
         </div>
 
      
-
-        {/* Actions */}
         <div className="flex items-center gap-4">
           {header.ctaButton && (
             <Button asChild>
@@ -69,7 +71,6 @@ export default function Header() {
             </Button>
           )}
 
-          {/* Shopping Cart */}
           <Sheet open={isCartOpen} onOpenChange={setIsCartOpen}>
             <SheetTrigger asChild>
               <Button variant="outline" size="icon" className="relative">

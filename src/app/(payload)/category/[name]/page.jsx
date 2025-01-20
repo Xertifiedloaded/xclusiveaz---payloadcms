@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardContent } from '@/components/ui/card'
 import { useParams } from 'next/navigation'
 import { useCart } from '@/context/CartContext'
+import { CategorySkeleton } from '@/components/skeletal/LandingSkeletal'
 
 export default function Categories() {
   const params = useParams()
@@ -37,7 +38,7 @@ export default function Categories() {
   }, [name])
 
   if (loading) {
-    return <div>Loading...</div>; 
+    return <CategorySkeleton/>
   }
 
   if (error) {
