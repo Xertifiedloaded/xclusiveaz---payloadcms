@@ -2,10 +2,11 @@
 
 import { CategoriesShowcase, FeaturedProducts, HeroSection } from '@/sections/LandingSections'
 import { useCombinedData } from '@/hooks/FetchCollection'
+import LandingSkeletal from '../../components/skeletal/LandingSkeletal';
 
 const LandingPage = () => {
   const { pages, loading, error } = useCombinedData()
-  if (loading) return <div>Loading...</div>
+  if (loading) return <LandingSkeletal/>
   if (error) return <div>Error loading header data: {error.message}</div>
 
   if (!pages || pages.length === 0) return <div>No  page data available</div>;

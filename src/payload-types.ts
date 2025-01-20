@@ -205,7 +205,6 @@ export interface Category {
   name: string;
   description?: string | null;
   image?: (string | null) | Media;
-  parent?: (string | null) | Category;
   updatedAt: string;
   createdAt: string;
 }
@@ -356,20 +355,6 @@ export interface Header {
   id: string;
   name: string;
   logo: string | Media;
-  navigationItems?:
-    | {
-        label: string;
-        link: string;
-        subItems?:
-          | {
-              label?: string | null;
-              link?: string | null;
-              id?: string | null;
-            }[]
-          | null;
-        id?: string | null;
-      }[]
-    | null;
   ctaButton?: {
     text?: string | null;
     link?: string | null;
@@ -668,7 +653,6 @@ export interface CategoriesSelect<T extends boolean = true> {
   name?: T;
   description?: T;
   image?: T;
-  parent?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -809,20 +793,6 @@ export interface DiscountsSelect<T extends boolean = true> {
 export interface HeaderSelect<T extends boolean = true> {
   name?: T;
   logo?: T;
-  navigationItems?:
-    | T
-    | {
-        label?: T;
-        link?: T;
-        subItems?:
-          | T
-          | {
-              label?: T;
-              link?: T;
-              id?: T;
-            };
-        id?: T;
-      };
   ctaButton?:
     | T
     | {

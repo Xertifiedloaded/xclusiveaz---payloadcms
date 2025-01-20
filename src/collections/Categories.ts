@@ -19,11 +19,7 @@ export const Categories: CollectionConfig = {
       type: 'upload',
       relationTo: 'media',
     },
-    {
-      name: 'parent',
-      type: 'relationship',
-      relationTo: 'categories',
-    },
+
   ],
   access: {
     read: () => true, 
