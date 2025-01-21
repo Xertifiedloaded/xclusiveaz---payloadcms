@@ -14,7 +14,7 @@ const DeliveryLocation = ({ locations, loading, error, formData, handleLocationC
     ) : error ? (
       <p className="text-red-500">Error loading locations.</p>
     ) : (
-      <Select value={formData.location} onValueChange={handleLocationChange}>
+      <Select className='text-base' value={formData.location} onValueChange={handleLocationChange}>
         <SelectTrigger>
           <SelectValue placeholder="Choose a location" />
         </SelectTrigger>

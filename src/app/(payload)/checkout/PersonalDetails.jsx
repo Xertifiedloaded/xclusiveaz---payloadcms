@@ -14,6 +14,7 @@ const PersonalDetails = ({ formData, handleInputChange }) => (
         onChange={handleInputChange}
         placeholder="John Doe"
         required
+        className='text-base'
       />
     </div>
 
@@ -24,6 +25,7 @@ const PersonalDetails = ({ formData, handleInputChange }) => (
           id="email"
           name="email"
           type="email"
+          className='text-base'
           value={formData.email}
           onChange={handleInputChange}
           placeholder="you@example.com"
@@ -36,6 +38,7 @@ const PersonalDetails = ({ formData, handleInputChange }) => (
           id="phone"
           name="phone"
           type="tel"
+          className='text-base'
           value={formData.phone}
           onChange={handleInputChange}
           placeholder="+234 000 0000"
@@ -48,6 +51,7 @@ const PersonalDetails = ({ formData, handleInputChange }) => (
       <Label htmlFor="address">Delivery Address</Label>
       <Textarea
         id="address"
+        className='text-base'
         name="address"
         value={formData.address}
         onChange={handleInputChange}

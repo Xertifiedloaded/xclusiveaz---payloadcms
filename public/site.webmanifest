@@ -1,0 +1,27 @@
+{
+    "name": "Xclusive AZ",
+    "short_name": "XclusiveAZ",
+    "description": "Discover our amazing products and exclusive deals",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#000000",
+    "icons": [
+      {
+        "src": "/xclusive.jpg",
+        "sizes": "16x16",
+        "type": "image/png"
+      },
+      {
+        "src": "/xclusive.jpg",
+        "sizes": "180x180",
+        "type": "image/png"
+      },
+      {
+        "src": "/xclusive.jpg",
+        "sizes": "1200x630",
+        "type": "image/jpeg"
+      }
+    ]
+  }
+  
