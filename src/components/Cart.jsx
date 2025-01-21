@@ -22,16 +22,16 @@ export function CartPage() {
             {cart.map((item) => (
               <div
                 key={item.id}
-                className="flex items-center space-x-4 p-4 bg-white rounded-lg shadow-lg"
+                className="flex flex-col md:flex-row items-center space-x-4 p-4 bg-white rounded-lg shadow-lg"
               >
-                <div className="relative border aspect-square h-16 w-16 min-w-fit overflow-hidden rounded">
+                <div className="relative border h-16 w-16 min-w-fit overflow-hidden rounded flex-shrink-0">
                   <img
                     src={item.images?.[0]?.image?.url || '/placeholder.png'}
                     alt={item.name}
                     className="object-cover w-full h-full"
                   />
                 </div>
-                <div className="flex flex-1 flex-col">
+                <div className="flex flex-1 flex-col mt-4 md:mt-0">
                   <div className="flex items-center justify-between">
                     <h3 className="font-semibold text-gray-800">{item.name}</h3>
                     <Button
