@@ -112,7 +112,7 @@ export default function ProductsPage() {
             </Button>
           )}
         </div>
-        <Select value={sortBy} onValueChange={setSortBy}>
+        <Select className="text-base" value={sortBy} onValueChange={setSortBy}>
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Choose order..." />
           </SelectTrigger>
@@ -212,7 +212,7 @@ export default function ProductsPage() {
                   placeholder="Search products..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-9 border-gray-200 focus:border-purple-500 focus:ring-purple-500"
+                  className="pl-9 text-base border-gray-200 focus:border-purple-500 focus:ring-purple-500"
                 />
               </div>
 

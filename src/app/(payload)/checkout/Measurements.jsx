@@ -40,7 +40,7 @@ const Measurements = ({ formData, setFormData }) => {
         {/* Select Measurements */}
         <div className="flex-1 space-y-2 relative">
           <Label>Select Measurements</Label>
-          <Select onValueChange={handleMeasurementSelection}>
+          <Select className='text-base' onValueChange={handleMeasurementSelection}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select measurements" />
             </SelectTrigger>
@@ -66,6 +66,7 @@ const Measurements = ({ formData, setFormData }) => {
             name="addValue"
             type="number"
             value={addValue}
+            className='text-base'
             onChange={(e) => setAddValue(e.target.value)}
           />
         </div>
@@ -93,6 +94,7 @@ const Measurements = ({ formData, setFormData }) => {
               id={measurement}
               name={measurement}
               type="number"
+              className='text-base'
               value={formData[measurement] || ''}
               readOnly
             />
