@@ -1,35 +1,74 @@
-'use client'
-import React, { useState } from 'react';
+'use client';
+import dynamic from 'next/dynamic';
+import React, { useState, useEffect } from 'react';
 import { useCart } from '@/context/CartContext';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
+import { useCombinedData } from '@/hooks/FetchCollection';
+import PersonalDetails from './PersonalDetails';
+import Measurements from './Measurements';
+import DeliveryLocation from './DeliveryLocation';
+import OrderSummary from './CartSummary'; 
+import useWhatsapp from '../../../hooks/UseWhatsApp';
 
 export default function CheckoutPage() {
-  const { cart, cartTotal, clearCart } = useCart();
+  const { cart, cartTotal, clearCart, updateLocation } = useCart();
+  const { locations, loading, error } = useCombinedData();
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
     address: '',
-    hips: '',
-    waist: '',
-    chest: '',
+    hips: 0,
+    waist: 0,
+    chest: 0,
     location: '',
   });
 
+  const [selectedMeasurements, setSelectedMeasurements] = useState([]);
+  const [addValue, setAddValue] = useState(0);
+
+  useEffect(() => {
+    setFormData((prev) => ({
+      ...prev,
+      cart: cart,
+      cartTotal: cartTotal,
+    }));
+  }, [cart, cartTotal]);
+
+  const { whatsappLoading, whatsappError, sendWhatsappMessage } = useWhatsapp(
+    formData,
+    cart,
+    cartTotal,
+  );
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const toggleMeasurementSelection = (measurement) => {
+    setSelectedMeasurements((prev) =>
+      prev.includes(measurement) ? prev.filter((m) => m !== measurement) : [...prev, measurement],
+    );
+  };
+
+  const applyMeasurementChange = () => {
+    setFormData((prev) => {
+      const updatedData = { ...prev };
+      selectedMeasurements.forEach((measurement) => {
+        updatedData[measurement] = parseFloat(updatedData[measurement] || 0) + addValue;
+      });
+      return updatedData;
+    });
+    setAddValue(0);
   };
 
   const handleLocationChange = (value) => {
-    setFormData(prev => ({ ...prev, location: value }));
+    const selectedLocation = locations.find((loc) => loc.name === value);
+    if (selectedLocation) {
+      setFormData({ ...formData, location: value });
+      updateLocation({ name: value, price: selectedLocation.price });
+    }
   };
 
   const handleSubmit = (e) => {
@@ -38,184 +77,62 @@ export default function CheckoutPage() {
     console.log('Cart Items:', cart);
   };
 
+  const handleWhatsapp = (e) => {
+    e.preventDefault();
+    sendWhatsappMessage();
+  };
+
+  const paystackProps = {
+    email: formData.email,
+    amount: cartTotal * 100, 
+    publicKey: process.env.PAYSTACK_SECRET_KEY,
+    onSuccess: (response) => {
+      console.log('Payment successful:', response);
+      alert('Thanks for your purchase! Come back soon!');
+      clearCart();
+    },
+    onClose: () => {
+      alert("Payment canceled. Don't leave yet!");
+    },
+  };
+
   return (
     <div className="container mx-auto p-4 md:p-6 space-y-6">
+      {whatsappError && <p className="text-red-500">{whatsappError}</p>}
       <h1 className="text-3xl font-bold tracking-tight">Checkout</h1>
-      
       <div className="grid lg:grid-cols-3 gap-6">
-        {/* Main Form Section */}
         <div className="lg:col-span-2 space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Personal Details</CardTitle>
-              <CardDescription>Please enter your contact information</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="name">Full Name</Label>
-                <Input
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  placeholder="John Doe"
-                  required
-                />
-              </div>
-              
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    placeholder="you@example.com"
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="phone">Phone</Label>
-                  <Input
-                    id="phone"
-                    name="phone"
-                    type="tel"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    placeholder="+234 000 0000"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="address">Delivery Address</Label>
-                <Textarea
-                  id="address"
-                  name="address"
-                  value={formData.address}
-                  onChange={handleInputChange}
-                  placeholder="Enter your full delivery address"
-                  required
-                  className="min-h-[100px]"
-                />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Measurements</CardTitle>
-              <CardDescription>Enter your measurements in centimeters</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid md:grid-cols-3 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="hips">Hips (cm)</Label>
-                  <Input
-                    id="hips"
-                    name="hips"
-                    type="number"
-                    value={formData.hips}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="waist">Waist (cm)</Label>
-                  <Input
-                    id="waist"
-                    name="waist"
-                    type="number"
-                    value={formData.waist}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="chest">Chest (cm)</Label>
-                  <Input
-                    id="chest"
-                    name="chest"
-                    type="number"
-                    value={formData.chest}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Delivery Location</CardTitle>
-              <CardDescription>Select your preferred delivery location</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Select value={formData.location} onValueChange={handleLocationChange}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Choose a location" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Lagos">Lagos</SelectItem>
-                  <SelectItem value="Abuja">Abuja</SelectItem>
-                  <SelectItem value="Port Harcourt">Port Harcourt</SelectItem>
-                </SelectContent>
-              </Select>
-            </CardContent>
-          </Card>
+          <PersonalDetails formData={formData} handleInputChange={handleInputChange} />
+          <Measurements
+            formData={formData}
+            setFormData={setFormData}
+            selectedMeasurements={selectedMeasurements}
+            toggleMeasurementSelection={toggleMeasurementSelection}
+            addValue={addValue}
+            setAddValue={setAddValue}
+            applyMeasurementChange={applyMeasurementChange}
+          />
+          <DeliveryLocation
+            locations={locations}
+            loading={loading}
+            error={error}
+            formData={formData}
+            handleLocationChange={handleLocationChange}
+          />
         </div>
-
-        {/* Order Summary Section */}
-        <div className="lg:col-span-1">
-          <Card className="sticky top-4">
-            <CardHeader>
-              <CardTitle>Order Summary</CardTitle>
-              <CardDescription>Review your order details</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <ScrollArea className="h-[400px] pr-4">
-                {cart.map((item) => (
-                  <div key={item.id} className="flex gap-4 mb-4">
-                    <div className="relative h-16 w-16 rounded-md overflow-hidden">
-                      <img
-                        src={item.images?.[0]?.image?.url || '/placeholder.png'}
-                        alt={item.name}
-                        className="object-cover h-full w-full"
-                      />
-                    </div>
-                    <div className="flex-1">
-                      <p className="font-medium">{item.name}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {item.quantity} x ${(item.price / 100).toFixed(2)}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </ScrollArea>
-
-              <Separator className="my-4" />
-              
-              <div className="space-y-4">
-                <div className="flex justify-between">
-                  <span className="font-semibold">Total</span>
-                  <span className="font-semibold">${cartTotal.toFixed(2)}</span>
-                </div>
-                
-                <Button onClick={clearCart} variant="outline" className="w-full">
-                  Clear Cart
-                </Button>
-                
-                <Button onClick={handleSubmit} className="w-full">
-                  Place Order
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+        {cart.length > 0 && (
+          <div className="lg:col-span-1">
+            <OrderSummary
+              cart={cart}
+              whatsappLoading={whatsappLoading}
+              cartTotal={cartTotal}
+              clearCart={clearCart}
+              handleWhatsapp={handleWhatsapp}
+              handleSubmit={handleSubmit}
+              paystackProps={paystackProps}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

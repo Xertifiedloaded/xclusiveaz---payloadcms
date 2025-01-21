@@ -16,6 +16,9 @@ export const GET = async () => {
   const CategoriesData = await payload.find({
     collection: 'categories',
   })
+  const LocationData = await payload.find({
+    collection: 'locations',
+  })
 
   const pageData = await payload.find({
     collection: 'pages',
@@ -33,6 +36,7 @@ export const GET = async () => {
     header: headerData?.docs?.length > 0 ? headerData.docs[0] : null,    
     footer: footerData?.docs?.length > 0 ? footerData.docs[0] : null,
     pages: pageData?.docs || [],
+    locations: LocationData?.docs || [],
     products: productData?.docs || [],
     Categories: CategoriesData?.docs || [],
     carts: cartData?.docs?.length > 0 ? cartData.docs[0] : null,

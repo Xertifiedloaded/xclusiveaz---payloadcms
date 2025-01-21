@@ -9,6 +9,7 @@ export const useCombinedData = () => {
     footer: null,
     pages: [],    
     products: [], 
+    locations: [], 
     carts: null,
   })
   const [loading, setLoading] = useState(true)
@@ -25,12 +26,13 @@ export const useCombinedData = () => {
         }
 
         const responseData = await response.json()
-        const { header, footer, pages, products, carts } = responseData
+        const { header, footer, pages, products, carts,locations } = responseData
         
         setData({
           header: header || null,
           footer: footer || null,
           pages: Array.isArray(pages) ? pages : [],
+          locations: Array.isArray(locations) ? locations : [],
           products: Array.isArray(products) ? products : [],
           carts: carts || null,
         })

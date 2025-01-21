@@ -34,6 +34,7 @@ import { Badge } from '@/components/ui/badge'
 import { Slider } from '@/components/ui/slider'
 import { useCart } from '@/context/CartContext'
 import { ProductsPageSkeleton } from '@/components/skeletal/LandingSkeletal'
+import Link from 'next/link'
 
 export default function ProductsPage() {
   const { products, loading, error } = useCombinedData()
@@ -310,7 +311,9 @@ export default function ProductsPage() {
                             variant="ghost"
                             className="absolute top-4 right-4 bg-white/90 hover:bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
                           >
-                            <Heart className="h-4 w-4" />
+                            <Link href={`/products/${product.id}`}>
+                              <Heart className="h-4 w-4" />
+                            </Link>
                           </Button>
                         </div>
                       </CardHeader>
