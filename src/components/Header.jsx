@@ -23,7 +23,7 @@ export default function Header() {
   const { header, loading, error } = useCombinedData()
   if (loading) {
     return (
-      <header className="bg-white shadow-sm w-full z-50 top-0">
+      <header className="bg-white sticky shadow-sm w-full z-50 top-0">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-6">
@@ -56,7 +56,7 @@ export default function Header() {
   if (!header) return <div>No header data available</div>
 
   return (
-    <header className=" bg-primary w-full z-50 top-0 ">
+    <header className="sticky bg-primary w-full z-50 top-0 ">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <div className="flex items-center">
           {/* {header.logo && <img src={header.logo.url} alt="Logo" className="h-8 w-auto" />} */}

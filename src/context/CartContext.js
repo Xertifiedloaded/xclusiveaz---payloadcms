@@ -1,7 +1,7 @@
-
 'use client'
 
-import { createContext, useContext, useReducer, useEffect } from 'react'
+import { useToast } from '@/hooks/use-toast'
+import { createContext, useContext, useReducer, useEffect, useState } from 'react'
 
 const CartContext = createContext()
 
@@ -9,24 +9,23 @@ const cartReducer = (state, action) => {
   switch (action.type) {
     case 'INITIALIZE_CART':
       return action.payload
-      
-      case 'ADD_TO_CART':
-        const existingProduct = state.find(item => item.id === action.payload.id)
-        if (existingProduct) {
-          alert('Item already exists in the cart')
-          return state
-        }
-        return [...state, { ...action.payload, quantity: 1 }]
-  
+
+    case 'ADD_TO_CART':
+      const existingProduct = state.find(item => item.id === action.payload.id)
+      if (existingProduct) {
+        return state
+      }
+      return [...state, { ...action.payload, quantity: 1 }]
+
     case 'REMOVE_FROM_CART':
       return state.filter(item => item.id !== action.payload)
 
-      case 'UPDATE_QUANTITY':
-        return state.map(item =>
-          item.id === action.payload.id
-            ? { ...item, quantity: Math.max(1, action.payload.quantity) }
-            : item
-        )
+    case 'UPDATE_QUANTITY':
+      return state.map(item =>
+        item.id === action.payload.id
+          ? { ...item, quantity: Math.max(1, action.payload.quantity) }
+          : item
+      )
 
     case 'CLEAR_CART':
       return []
@@ -37,7 +36,9 @@ const cartReducer = (state, action) => {
 }
 
 export function CartProvider({ children }) {
+  const { toast } = useToast()
   const [cart, dispatch] = useReducer(cartReducer, [])
+  const [selectedLocation, setSelectedLocation] = useState({ name: '', price: 0 })
 
   useEffect(() => {
     const savedCart = JSON.parse(localStorage.getItem('cart')) || []
@@ -51,13 +52,28 @@ export function CartProvider({ children }) {
   const addToCart = (product) => {
     const existingProduct = cart.find(item => item.id === product.id)
     if (existingProduct) {
-      alert('Item already exists in the cart')
+      toast({
+        title: `${product.name}: Already Exists in the Cart`,
+        variant: "destructive"
+      })
       return
     }
     dispatch({ type: 'ADD_TO_CART', payload: product })
+    toast({
+      title: `${product.name}: has been added to cart`,
+      variant: "success"
+    })
   }
+
   const removeFromCart = (productId) => {
-    dispatch({ type: 'REMOVE_FROM_CART', payload: productId })
+    const product = cart.find(item => item.id === productId)
+    if (product) {
+      dispatch({ type: 'REMOVE_FROM_CART', payload: productId })
+      toast({
+        title: `${product.name} Removed from Cart`,
+        variant: "success"
+      })
+    }
   }
 
   const updateQuantity = (productId, quantity) => {
@@ -66,16 +82,26 @@ export function CartProvider({ children }) {
 
   const clearCart = () => {
     dispatch({ type: 'CLEAR_CART' })
+    toast({
+      title: "Cart Cleared",
+      variant: "success"
+    })
+  }
+
+  const updateLocation = (location) => {
+    setSelectedLocation(location)
   }
 
   return (
-    <CartContext.Provider value={{ 
-      cart, 
-      addToCart, 
-      removeFromCart, 
-      updateQuantity, 
+    <CartContext.Provider value={{
+      cart,
+      addToCart,
+      removeFromCart,
+      updateQuantity,
       clearCart,
-      cartTotal: cart.reduce((total, item) => total + (item.price * item.quantity), 0),
+      updateLocation,
+      selectedLocation,
+      cartTotal: cart.reduce((total, item) => total + (item.price * item.quantity), 0) + selectedLocation.price,
       cartCount: cart.reduce((count, item) => count + item.quantity, 0)
     }}>
       {children}

@@ -17,8 +17,9 @@ import { Pages } from './collections/Pages'
 import { Discounts } from './collections/Discount'
 import { HeaderCollection } from './collections/HeaderCollection'
 import { FooterCollection } from './collections/FooterCollection'
-
+import { stripePlugin } from '@payloadcms/plugin-stripe'
 import Carts from './collections/Cart'
+import Location from './collections/Location'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -41,6 +42,7 @@ export default buildConfig({
     HeaderCollection,
     FooterCollection,
     Carts,
+    Location,
   ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
@@ -53,6 +55,9 @@ export default buildConfig({
   sharp,
   plugins: [
     payloadCloudPlugin(),
+    stripePlugin({
+      stripeSecretKey: process.env.STRIPE_SECRET_KEY || '',
+    }),
 
     s3Storage({
       collections: {

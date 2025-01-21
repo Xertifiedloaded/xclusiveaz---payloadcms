@@ -9,7 +9,10 @@ import './custom.scss'
 import './globals.css'
 import Header from '@/components/Header.jsx'
 import Footer from '@/components/Footer.jsx'
+import { Toaster } from '../../components/ui/toaster'
+
 import {CartProvider} from '../../context/CartContext.js'
+
 const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
@@ -47,6 +50,7 @@ const Layout = ({ children }: Args) => (
         <Footer />
       </div>
     </CartProvider>
+    <Toaster/>
   </RootLayout>
 )
 
