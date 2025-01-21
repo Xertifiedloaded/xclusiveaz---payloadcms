@@ -1,6 +1,6 @@
 
 export const sendWhatsappMessage = (formData, cart, cartTotal) => {
-    const phoneNumber = '09081128661';
+    const phoneNumber = '2348151354931';
     const message = `
       *Checkout Details:*
 
@@ -26,6 +26,6 @@ export const sendWhatsappMessage = (formData, cart, cartTotal) => {
       $${cartTotal}
     `;
     
-    return `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message.trim())}`;
+    const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
   };
   
