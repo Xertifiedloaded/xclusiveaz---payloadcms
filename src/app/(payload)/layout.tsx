@@ -36,7 +36,7 @@ const manrope = Manrope({
 })
 
 export const metadata = {
-  metadataBase: new URL('https://yourdomain.com'),
+  metadataBase: new URL('https://xclusiveaz.com.ng'),
   title: {
     default: 'Xclusive AZ',
   },
@@ -45,7 +45,7 @@ export const metadata = {
   openGraph: {
     title: 'Xclusive AZ',
     description: 'Discover our amazing products and exclusive deals',
-    url: 'https://yourdomain.com',
+    url: 'https://xclusiveaz.com.ng',
     siteName: 'Xclusive AZ',
     images: [
       {
