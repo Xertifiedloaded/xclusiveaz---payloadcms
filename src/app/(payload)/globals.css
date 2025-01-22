@@ -4,7 +4,8 @@
 *::before,
 *::after {
   padding: 0;
-  left: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 @layer base {
   :root {
@@ -86,7 +87,9 @@ select,
 textarea {
   font-size: 16px;
 }
-
+::-webkit-scrollbar{
+  scroll-behavior: smooth;
+}
 .motion-image-enter {
   opacity: 0;
 }
@@ -100,4 +103,8 @@ textarea {
 .motion-image-exit-active {
   opacity: 0;
   transition: opacity 300ms ease-in;
+}
+
+.btn{
+  background-color: white!important;
 }

@@ -2,17 +2,20 @@
 
 import { CategoriesShowcase, FeaturedProducts, HeroSection } from '@/sections/LandingSections'
 import { useCombinedData } from '@/hooks/FetchCollection'
-import LandingSkeletal from '../../components/skeletal/LandingSkeletal';
+import LandingSkeletal from '../../components/skeletal/LandingSkeletal'
+import InstagramFeed from '@/components/InstagramFeed'
+import AlertError from '@/components/Alert'
 
 const LandingPage = () => {
   const { pages, loading, error } = useCombinedData()
-  if (loading) return <LandingSkeletal/>
-  if (error) return <div>Error loading header data: {error.message}</div>
+  if (loading) return <LandingSkeletal />
+  if (error)
+    return <AlertError descriptionError={`Error loading HomePage data: ${error.message}`} />
 
-  if (!pages || pages.length === 0) return <div>No  page data available</div>;
-  const landingPage = pages.find(page => page.pageType === 'landing');
+  if (!pages || pages.length === 0) return <div>No page data available</div>
+  const landingPage = pages.find((page) => page.pageType === 'landing')
 
-  if (!landingPage) return <div>No landing page found</div>;
+  if (!landingPage) return <AlertError descriptionError={`No Data Available`} />
   return (
     <main className="min-h-screen">
       {landingPage?.content?.map((block) => {
@@ -27,6 +30,7 @@ const LandingPage = () => {
             return null
         }
       })}
+      <InstagramFeed />
     </main>
   )
 }
