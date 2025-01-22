@@ -7,10 +7,10 @@ import { Fraunces, Inter, Manrope } from 'next/font/google'
 import { importMap } from './admin/importMap.js'
 import './custom.scss'
 import './globals.css'
-import Header from '@/components/Header.jsx'
-import Footer from '@/components/Footer.jsx'
-import { Toaster } from '../../components/ui/toaster'
+import  { Toaster } from 'react-hot-toast';
 import { CartProvider } from '../../context/CartContext.js'
+import UseClientLayout from '../../components/UseClientLayout'
+import { Analytics } from '@vercel/analytics/next';
 
 
 export const viewport = {
@@ -18,42 +18,29 @@ export const viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: 'no',
-  themeColor: 'black'
+  themeColor: 'black',
 }
-const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-})
 
-const fraunces = Fraunces({
-  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
-  subsets: ['latin'],
-})
-
-const manrope = Manrope({
-  weight: ['200', '300', '400', '600', '700', '800'],
-  subsets: ['latin'],
-})
 
 export const metadata = {
-  metadataBase: new URL('https://yourdomain.com'),
+  metadataBase: new URL('https://xclusiveaz.com.ng'),
   title: {
     default: 'Xclusive AZ',
   },
   description: 'Discover our amazing products and exclusive deals',
-  keywords: ['xclusive', 'azeemat', 'xclusive','az'],
+  keywords: ['xclusive', 'azeemat', 'xclusive', 'az'],
   openGraph: {
     title: 'Xclusive AZ',
     description: 'Discover our amazing products and exclusive deals',
-    url: 'https://yourdomain.com',
+    url: 'https://xclusiveaz.com.ng',
     siteName: 'Xclusive AZ',
     images: [
       {
         url: 'https://xclusiveaz.vercel.app/api/media/file/xclusive.jpg',
         width: 1200,
         height: 630,
-        alt: 'Xclusive AZ'
-      }
+        alt: 'Xclusive AZ',
+      },
     ],
     locale: 'en_US',
     type: 'website',
@@ -68,7 +55,7 @@ export const metadata = {
   icons: {
     icon: '/xclusive.jpg',
     apple: '/xclusive.jpg',
-    shortcut: '/xclusive.jpg'
+    shortcut: '/xclusive.jpg',
   },
   manifest: '/site.webmanifest',
   robots: {
@@ -100,13 +87,12 @@ const serverFunction: ServerFunctionClient = async function (args) {
 const Layout = ({ children }: Args) => (
   <RootLayout config={config} importMap={importMap} serverFunction={serverFunction}>
     <CartProvider>
-      <div className={`${inter.className} ${fraunces.className} ${manrope.className}`}>
-        <Header />
+      <UseClientLayout>
         {children}
-        <Footer />
-      </div>
+      </UseClientLayout>
     </CartProvider>
-    <Toaster/>
+    <Toaster position="top-center" reverseOrder={false} />
+    <Analytics />
   </RootLayout>
 )
 

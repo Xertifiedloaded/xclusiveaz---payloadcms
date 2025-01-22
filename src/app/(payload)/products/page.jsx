@@ -35,6 +35,7 @@ import { Slider } from '@/components/ui/slider'
 import { useCart } from '@/context/CartContext'
 import { ProductsPageSkeleton } from '@/components/skeletal/LandingSkeletal'
 import Link from 'next/link'
+import ProductCard from '@/components/ProductCart'
 
 export default function ProductsPage() {
   const { products, loading, error } = useCombinedData()
@@ -282,69 +283,9 @@ export default function ProductsPage() {
                   </CardContent>
                 </Card>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4  gap-6">
                   {filteredProducts.map((product) => (
-                    <Card
-                      key={product.id}
-                      className="group overflow-hidden border-gray-200 hover:border-purple-500 transition-colors"
-                    >
-                      <CardHeader className="p-0">
-                        <div className="aspect-square relative overflow-hidden">
-                          <img
-                            src={product.images?.[0]?.image?.url || '/api/placeholder/400/400'}
-                            alt={product.name || 'Product Image'}
-                            className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
-                          />
-                          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <div className="absolute bottom-4 left-4 right-4">
-                              <Button
-                                className="w-full bg-white/90 hover:bg-white text-gray-900"
-                                onClick={() => addToCart(product)}
-                              >
-                                <ShoppingCart className="h-4 w-4 mr-2" />
-                                Add to Cart
-                              </Button>
-                            </div>
-                          </div>
-                          <Button
-                            size="icon"
-                            variant="ghost"
-                            className="absolute top-4 right-4 bg-white/90 hover:bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                          >
-                            <Link href={`/products/${product.id}`}>
-                              <Heart className="h-4 w-4" />
-                            </Link>
-                          </Button>
-                        </div>
-                      </CardHeader>
-
-                      <CardContent className="p-6">
-                        <div className="mb-2 flex items-start justify-between gap-4">
-                          <h2 className="font-medium line-clamp-1 text-gray-900">
-                            {product.name || 'Untitled Product'}
-                          </h2>
-                          <span className="font-semibold whitespace-nowrap text-purple-600">
-                            ${(product.price / 100).toFixed(2)}
-                          </span>
-                        </div>
-                        <p className="text-sm text-gray-500 line-clamp-2 mb-4">
-                          {product.description?.root?.children?.[0]?.children?.[0]?.text ||
-                            'No description available'}
-                        </p>
-                        <div className="flex flex-wrap gap-1.5">
-                          {Array.isArray(product.sizes) &&
-                            product.sizes.map((size, index) => (
-                              <Badge
-                                key={index}
-                                variant="secondary"
-                                className="bg-gray-100 text-gray-600 hover:bg-gray-200"
-                              >
-                                {size.size}
-                              </Badge>
-                            ))}
-                        </div>
-                      </CardContent>
-                    </Card>
+                    <ProductCard key={product.id} product={product} addToCart={addToCart} />
                   ))}
                 </div>
               )}

@@ -16,6 +16,7 @@ import { ShoppingCart } from 'lucide-react'
 import { useCombinedData } from '@/hooks/FetchCollection'
 import { CartPage } from './Cart'
 import { useCart } from '@/context/CartContext'
+import AlertError from './Alert';
 
 export default function Header() {
   const { cartCount } = useCart()
@@ -51,9 +52,9 @@ export default function Header() {
     </header>
     )
   }
-  if (error) return <div>Error loading header data: {error.message}</div>
+  if (error) return <AlertError descriptionError={`Error loading header data: ${error.message}`}/>
 
-  if (!header) return <div>No header data available</div>
+  if (!header) return <AlertError descriptionError={`No Data Available`}/>
 
   return (
     <header className="sticky bg-primary w-full z-50 top-0 ">
