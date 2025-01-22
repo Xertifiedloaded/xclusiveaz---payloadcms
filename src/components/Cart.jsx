@@ -5,6 +5,7 @@ import { ShoppingCart, Minus, Plus, Trash2 } from 'lucide-react'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
 import { useCart } from '@/context/CartContext'
+import Link from 'next/link'
 
 export function CartPage() {
   const { cart, removeFromCart, updateQuantity, clearCart, cartTotal } = useCart()
@@ -113,7 +114,7 @@ export function CartPage() {
               Clear Cart
             </Button>
             <Button className="w-full" disabled={cart.length === 0}>
-              Checkout
+              <Link href="/checkout">Checkout</Link>
             </Button>
           </div>
         </div>
