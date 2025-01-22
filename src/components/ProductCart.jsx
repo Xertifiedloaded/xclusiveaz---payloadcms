@@ -1,7 +1,8 @@
-import { ShoppingCart, Heart, ChevronLeft } from 'lucide-react'
+import { ShoppingCart, Heart, ChevronLeft, Eye } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Card, CardHeader, CardContent } from '@/components/ui/card'
+import Link from 'next/link'
+
 const ProductCard = ({ product, addToCart }) => {
   return (
     <div className="group bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
@@ -28,7 +29,9 @@ const ProductCard = ({ product, addToCart }) => {
             variant="ghost"
             className="absolute top-4 right-4 bg-white/90 hover:bg-white rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition-all duration-300"
           >
-            <Heart className="h-4 w-4 text-gray-700" />
+            <Link href={`/products/${product?.id}`}>
+              <Eye className="h-4 w-4 text-gray-700" />
+            </Link>
           </Button>
         </div>
       </div>
