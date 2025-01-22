@@ -16,7 +16,7 @@ import { ShoppingCart } from 'lucide-react'
 import { useCombinedData } from '@/hooks/FetchCollection'
 import { CartPage } from './Cart'
 import { useCart } from '@/context/CartContext'
-import AlertError from './Alert';
+import AlertError from './Alert'
 
 export default function Header() {
   const { cartCount } = useCart()
@@ -25,36 +25,36 @@ export default function Header() {
   if (loading) {
     return (
       <header className="bg-white sticky shadow-sm w-full z-50 top-0">
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-6">
-            <div className="h-10 w-36 bg-gray-200 animate-pulse rounded-md"></div>
-            <div className="hidden md:flex space-x-4">
-              {[...Array(4)].map((_, i) => (
-                <div key={i} className="h-4 w-20 bg-gray-200 animate-pulse rounded"></div>
-              ))}
-            </div>
-          </div>
-
-          <div className="flex items-center space-x-6">
-            <div className="hidden md:block h-10 w-64 bg-gray-200 animate-pulse rounded-full"></div>
-            
-            <div className="flex items-center space-x-4">
-              <div className="h-10 w-10 bg-gray-200 animate-pulse rounded-full">
-                <div className="absolute -top-1 -right-1 h-5 w-5 bg-gray-300 animate-pulse rounded-full"></div>
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-6">
+              <div className="h-10 w-36 bg-gray-200 animate-pulse rounded-md"></div>
+              <div className="hidden md:flex space-x-4">
+                {[...Array(4)].map((_, i) => (
+                  <div key={i} className="h-4 w-20 bg-gray-200 animate-pulse rounded"></div>
+                ))}
               </div>
-              <div className="h-10 w-10 bg-gray-200 animate-pulse rounded-full"></div>
-              <div className="h-10 w-40 bg-gray-200 animate-pulse rounded-lg"></div>
+            </div>
+
+            <div className="flex items-center space-x-6">
+              <div className="hidden md:block h-10 w-64 bg-gray-200 animate-pulse rounded-full"></div>
+
+              <div className="flex items-center space-x-4">
+                <div className="h-10 w-10 bg-gray-200 animate-pulse rounded-full">
+                  <div className="absolute -top-1 -right-1 h-5 w-5 bg-gray-300 animate-pulse rounded-full"></div>
+                </div>
+                <div className="h-10 w-10 bg-gray-200 animate-pulse rounded-full"></div>
+                <div className="h-10 w-40 bg-gray-200 animate-pulse rounded-lg"></div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </header>
+      </header>
     )
   }
-  if (error) return <AlertError descriptionError={`Error loading header data: ${error.message}`}/>
+  if (error) return <AlertError descriptionError={`Error loading header data: ${error.message}`} />
 
-  if (!header) return <AlertError descriptionError={`No Data Available`}/>
+  if (!header) return <AlertError descriptionError={`No Data Available`} />
 
   return (
     <header className="sticky bg-primary w-full z-50 top-0 ">
@@ -64,7 +64,6 @@ export default function Header() {
           <h1 className=" text-3xl">Xclusive Couture</h1>
         </div>
 
-     
         <div className="flex items-center gap-4">
           {header.ctaButton && (
             <Button asChild>
@@ -83,18 +82,16 @@ export default function Header() {
                 )}
               </Button>
             </SheetTrigger>
-            <SheetContent>
-              <SheetHeader>
-              <SheetTitle>Shopping Cart ({cartCount} items)</SheetTitle>
+            <SheetContent className="h-[100dvh] flex flex-col overflow-hidden">
+              <SheetHeader className="flex-none">
+                <SheetTitle>Shopping Cart ({cartCount} items)</SheetTitle>
                 <SheetDescription>View your shopping cart items</SheetDescription>
               </SheetHeader>
-              <div className="mt-8">
+              <div className="flex-1 overflow-hidden">
                 <CartPage />
               </div>
             </SheetContent>
           </Sheet>
-
-     
         </div>
       </div>
     </header>
