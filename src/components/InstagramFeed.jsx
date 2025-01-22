@@ -123,32 +123,33 @@ export default function InstagramFeed() {
 }
 
 function InstagramPost({ post }) {
-  return (
-    <Card className="overflow-hidden">
-      <div className="relative aspect-square">
-        {post.media_type === 'VIDEO' ? (
-          <video className="w-full h-full object-cover" controls src={post.media_url} />
-        ) : (
-          <img
-            className="w-full h-full object-cover"
-            src={post.media_url}
-            alt={post.caption?.slice(0, 100) || 'Instagram post'}
-          />
-        )}
-      </div>
-      <CardContent className="p-4">
-        <p className="text-sm text-muted-foreground line-clamp-3">{post.caption || 'No caption'}</p>
-        <Separator className="my-2" />
-        <a
-          href={post.permalink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-sm text-primary hover:underline inline-flex items-center gap-1"
-        >
-          <Instagram className="w-4 h-4" />
-          View on Instagram
-        </a>
-      </CardContent>
-    </Card>
-  )
-}
+    return (
+      <Card className="overflow-hidden relative aspect-auto sm:aspect-[4/5]">
+        <div className="relative w-full">
+          {post.media_type === 'VIDEO' ? (
+            <video className="w-full h-auto object-cover" controls src={post.media_url} />
+          ) : (
+            <img
+              className="w-full h-auto object-cover"
+              src={post.media_url}
+              alt={post.caption?.slice(0, 100) || 'Instagram post'}
+            />
+          )}
+        </div>
+        <CardContent className="p-4">
+          <p className="text-sm text-muted-foreground line-clamp-3">{post.caption || 'No caption'}</p>
+          <Separator className="my-2" />
+          <a
+            href={post.permalink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-primary hover:underline inline-flex items-center gap-1"
+          >
+            <Instagram className="w-4 h-4" />
+            View on Instagram
+          </a>
+        </CardContent>
+      </Card>
+    )
+  }
+  
