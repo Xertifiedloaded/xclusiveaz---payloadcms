@@ -235,17 +235,15 @@ export default function ProductsPage() {
         </div>
       </div>
 
-      <div className="container mx-auto pt-24 px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto pt-5 px-4 sm:px-6 lg:px-8">
         <div className="py-8">
           <div className="flex flex-col lg:flex-row gap-8">
-            {/* Desktop Filters */}
             <div className="hidden lg:block w-72 shrink-0">
               <div className="sticky top-28 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                 <FilterPanel />
               </div>
             </div>
 
-            {/* Product Grid */}
             <div className="flex-1">
               <div className="mb-6 flex items-center justify-between">
                 <p className="text-gray-500">
@@ -283,7 +281,7 @@ export default function ProductsPage() {
                   </CardContent>
                 </Card>
               ) : (
-                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4  gap-6">
+                <div className="grid grid-cols-2 md:grid-cols-3  gap-2">
                   {filteredProducts.map((product) => (
                     <ProductCard key={product.id} product={product} addToCart={addToCart} />
                   ))}

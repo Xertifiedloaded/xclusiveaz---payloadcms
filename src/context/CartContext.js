@@ -8,13 +8,12 @@ const cartReducer = (state, action) => {
   switch (action.type) {
     case 'INITIALIZE_CART':
       return action.payload;
-
-    case 'ADD_TO_CART':
-      const existingProduct = state.find(item => item.id === action.payload.id);
-      if (existingProduct) {
-        return state;
-      }
-      return [...state, { ...action.payload, quantity: 1 }];
+      case 'ADD_TO_CART':
+        const existingProduct = state.find(item => item.id === action.payload.id);
+        if (existingProduct) {
+          return state;
+        }
+        return [{ ...action.payload, quantity: 1 }, ...state];
 
     case 'REMOVE_FROM_CART':
       return state.filter(item => item.id !== action.payload);
